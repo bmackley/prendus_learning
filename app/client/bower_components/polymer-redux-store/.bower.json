@@ -1,0 +1,25 @@
+{
+  "name": "polymer-redux-store",
+  "version": "0.1.6",
+  "description": "A simple Polymer web component that allows a more declarative use of Redux.",
+  "authors": [
+    "Jordan Last <jordan.michael.last@gmail.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "web-components"
+  ],
+  "homepage": "https://github.com/lastmjs/polymer-redux-store",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.4.0"
+  },
+  "_release": "0.1.6",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.6",
+    "commit": "297d711951be01537433401fd75472b72352d60c"
+  },
+  "_source": "https://github.com/lastmjs/polymer-redux-store.git",
+  "_target": "^0.1.6",
+  "_originalSource": "polymer-redux-store"
+}

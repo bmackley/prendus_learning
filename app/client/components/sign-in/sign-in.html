@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="../../bower_components/polymer/polymer.html" rel="import">
+    <link href="../../bower_components/polymer-redux-store/redux-store.html" rel="import">
+    <!-- Element Imports -->
+</head>
+
+<dom-module id="sign-in">
+  <style>
+    /* CSS rules for your element */
+    <style>
+      :host {
+        display: block;
+      }
+
+      #loginForm{
+        width: 33%;
+      }
+      @media (max-width: 1200px) {
+        #loginForm{
+          width: 66%;
+          margin-left: 16%;
+        }
+      }
+      @media (max-width: 600px) {
+        #loginForm{
+          width: 95%;
+          margin-left: 2%;
+        }
+      }
+    </style>
+  </style>
+  <template>
+    <!-- local DOM for your element -->
+    <redux-store action="[[action]]"></redux-store>
+    <center>
+      <paper-card id = "loginForm" heading ="Login">
+          <form is="iron-form" method="get" action="/" id="basic">
+            <paper-input name="email" id = "loginEmail" label="Email" required auto-validate></paper-input>
+            <paper-input name="password" id = "loginPassword" label="Password" type="password" required auto-validate></paper-input>
+            <div class="output"></div>
+            <br>
+            <paper-button raised id="signin-submit">Submit</paper-button>
+            <br>
+            <br>
+          </form>
+        </div>
+      </paper-card>
+    </center>
+  </template>
+</dom-module>
+<!-- <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script> -->
+
+<script src = "../../dist/sign-in.js"></script>

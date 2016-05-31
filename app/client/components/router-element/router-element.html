@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="../../bower_components/polymer/polymer.html" rel="import">
+    <!--Import all of the elements that need to be routed -- >
+    <link rel="import" href="../sign-in/sign-in.html">
+    <link rel="import" href="../sign-up/sign-up.html">
+    <link rel="import" href="../class-element/class-element.html">
+    <link rel="import" href="../homepage-element/index-element.html">
+    <!-- Element Imports -->
+</head>
+
+<dom-module id="router-element">
+  <style>
+    /* CSS rules for your element */
+  </style>
+  <template>
+    <!-- local DOM for your element -->
+    <app-location route="{{route}}"></app-location>
+    <app-route
+        route="{{route}}"
+        pattern="/:page"
+        data="{{pageData}}"
+        tail="{{pageTail}}"
+        active ="{{pageActive}}">
+    </app-route>
+    <iron-pages selected="{{pageData.page}}" attr-for-selected ="data-page">
+      <sign-in data-page = "login" >
+      </sign-in>
+      <sign-up data-page = "signup">
+      </sign-up>
+      <class-element data-page = "createclass">
+      </class-element>
+      <index-element data-page = "index">
+      </index-element>
+    </iron-pages>
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: "router-element",
+    properties: {
+      },
+    ready: function(e){
+    }
+  });
+</script>

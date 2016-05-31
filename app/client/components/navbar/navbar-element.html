@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="../../bower_components/polymer/polymer.html" rel="import">
+    <!-- Carbon elements -->
+    <!-- Element Imports -->
+</head>
+
+<dom-module id="navbar-element">
+  <style>
+    /* CSS rules for your element */
+  </style>
+  <template>
+  <redux-store on-statechange="mapStateToThis"></redux-store>
+    <!-- local DOM for your element -->
+  <paper-header-panel class="flex">
+      <paper-toolbar>
+        <paper-icon-button icon="menu"></paper-icon-button>
+        <span id ="index" on-tap="changeURL" style ="cursor: pointer; cursor: hand;"> <span class="title" >Prendus</span></span>
+        <span class="title"></span>
+        <template is="dom-if" if="{{username}}">
+          <div>{{username}}</div>
+          <paper-button class="route" id="login" on-tap="logoutUser">Logout</paper-button>
+        </template>
+        <template is="dom-if" if="{{!username}}">
+          <paper-button class="route" id="login" on-tap="changeURL">Login</paper-button>
+          <paper-button class="route" id="signup" on-tap="changeURL">Sign Up</paper-button>
+        </template>
+      </paper-toolbar>
+  </paper-header-panel>
+  </template>
+</dom-module>
+<script>
+  Polymer({
+    is: "navbar-element",
+    listeners: {
+
+    },
+    mapStateToThis: function(e) {
+      console.log(e.detail.state.currentUser)
+      this.username = e.detail.state.currentUser.email;
+    },
+    changeURL: function(e){
+      console.log(e.target.id)
+      let location = e.target.id
+      window.history.pushState({}, '', location);
+      this.fire('location-changed', {}, {node: window});
+    },
+    properties: {
+        username: {
+          type: String,
+          value: ''
+        }
+      },
+    ready: function(e){
+    }
+  });
+</script>

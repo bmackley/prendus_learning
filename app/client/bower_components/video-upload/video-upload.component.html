@@ -1,0 +1,22 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-toast/paper-toast.html">
+<script src="../../node_modules/babel-polyfill/dist/polyfill.min.js"></script>
+
+<dom-module id="prendus-video-upload">
+    <template>
+        <div style="display: flex; flex-direction: column">
+            <paper-input id="nameInput" label="video name"></paper-input>
+            <paper-input id="urlInput" label="video url" on-input="updateSrc"></paper-input>
+            <div style="display: flex; flex-direction: row; margin-bottom: 25px">
+                <paper-button on-click="uploadClick" raised>Upload</paper-button>
+            </div>
+            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center">
+                <video src="[[url]]" controls></video>
+            </div>
+        </div>
+        <paper-toast id="uploadedToast" text="Video URL uploaded"></paper-toast>
+    </template>
+    <script src="dist/video-upload.component.js"></script>
+</dom-module>

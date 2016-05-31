@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="../../bower_components/polymer/polymer.html" rel="import">
+    <!-- Element Imports -->
+    <link rel="import" href="/components/elements.html">
+</head>
+
+<dom-module id="app-element">
+  <style>
+    /* CSS rules for your element */
+  </style>
+  <template>
+    <redux-store root-reducer="[[rootReducer]]"></redux-store>
+    <navbar-element></navbar-element>
+    <router-element></router-element>
+  </template>
+</dom-module>
+<script src = "../../dist/app-element.js"></script>

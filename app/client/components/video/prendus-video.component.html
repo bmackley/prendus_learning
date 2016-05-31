@@ -1,0 +1,19 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+
+<link href="/node_modules/video.js/dist/video-js.min.css" rel="stylesheet">
+<script src="/node_modules/video.js/dist/video.min.js"></script>
+<script src="/node_modules/babel-polyfill/dist/polyfill.min.js"></script>
+
+<dom-module id="prendus-video">
+    <template>
+        <iron-ajax id="ironAjaxElement" method="post" url="[[xAPIEndpointURL]]" body="[[postBody]]" content-type="application/json" on-respone="[[handleResponse]]"></iron-ajax>
+
+        <div style="display: flex; flex-direction: row; align-items: center; justify-content: center">
+            <video id="theVideoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" src="[[videoSrc]]" controls width="500" height="500" data-setup='{"playbackRates": [0.5, 1, 1.5, 2]}'></video>
+        </div>
+    </template>
+
+    <script src="/dist/prendus-video.component.js"></script>
+</dom-module>
