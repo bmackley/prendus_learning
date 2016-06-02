@@ -54,15 +54,22 @@
 	    mapStateToThis: function mapStateToThis(e) {
 	        var firebaseConcepts = e.detail.state.concepts.concepts;
 	        for (var key in firebaseConcepts) {
+	            console.log(key);
 	            var newConceptDemo = {
 	                title: firebaseConcepts[key].title,
-	                Creator: firebaseConcepts[key].user
+	                Creator: firebaseConcepts[key].user,
+	                key: key
 	            };
 	            this.push('concepts', newConceptDemo);
 	        }
 	    },
 	    addConcept: function addConcept(e) {
 	        addDialog.open();
+	    },
+	    deleteItem: function deleteItem(e) {
+	        console.log('delete');
+	        console.log(e.target.id);
+	        _actions.Actions.deleteConcept.execute(this, e.target.id);
 	    },
 	    toggle: function toggle(e) {
 	        var collapseTarget = e.target.id;
@@ -143,7 +150,7 @@
 
 	var _firebaseService = __webpack_require__(4);
 
-	var _conceptModel = __webpack_require__(8);
+	var _conceptModel = __webpack_require__(7);
 
 	var __awaiter = undefined && undefined.__awaiter || function (thisArg, _arguments, P, generator) {
 	    return new (P || (P = Promise))(function (resolve, reject) {
@@ -230,7 +237,8 @@
 	        type: 'GET_CONCEPTS',
 	        execute: function execute(context) {
 	            return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee2() {
-	                var concepts;
+	                var _concepts;
+
 	                return regeneratorRuntime.wrap(function _callee2$(_context2) {
 	                    while (1) {
 	                        switch (_context2.prev = _context2.next) {
@@ -240,11 +248,11 @@
 	                                return _conceptModel.ConceptModel.getConcepts();
 
 	                            case 3:
-	                                concepts = _context2.sent;
+	                                _concepts = _context2.sent;
 
 	                                context.action = {
 	                                    type: Actions.getConcepts.type,
-	                                    concepts: concepts
+	                                    concepts: _concepts
 	                                };
 	                                _context2.next = 10;
 	                                break;
@@ -260,6 +268,46 @@
 	                        }
 	                    }
 	                }, _callee2, this, [[0, 7]]);
+	            }));
+	        }
+	    },
+	    deleteConcept: {
+	        type: 'DELETE_CONCEPT',
+	        execute: function execute(context, key) {
+	            return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee3() {
+	                var deletedConcept;
+	                return regeneratorRuntime.wrap(function _callee3$(_context3) {
+	                    while (1) {
+	                        switch (_context3.prev = _context3.next) {
+	                            case 0:
+	                                console.log('Actions Delete');
+	                                _context3.prev = 1;
+	                                _context3.next = 4;
+	                                return _conceptModel.ConceptModel.deleteConcept(key);
+
+	                            case 4:
+	                                deletedConcept = _context3.sent;
+
+	                                console.log('deletedConcept');
+	                                console.log(deletedConcept);
+	                                context.action = {
+	                                    type: Actions.deleteConcept.type,
+	                                    concepts: concepts
+	                                };
+	                                _context3.next = 13;
+	                                break;
+
+	                            case 10:
+	                                _context3.prev = 10;
+	                                _context3.t0 = _context3['catch'](1);
+	                                return _context3.abrupt('return', _context3.t0);
+
+	                            case 13:
+	                            case 'end':
+	                                return _context3.stop();
+	                        }
+	                    }
+	                }, _callee3, this, [[1, 10]]);
 	            }));
 	        }
 	    }
@@ -362,55 +410,87 @@
 	        }, _callee2, this);
 	    }));
 	};
-	var createUser = function createUser(email, password) {
+	var deleteConcept = function deleteConcept(path, key) {
 	    return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee3() {
-	        var ref, userData;
+	        var newPath, deletedConcept;
 	        return regeneratorRuntime.wrap(function _callee3$(_context3) {
 	            while (1) {
 	                switch (_context3.prev = _context3.next) {
 	                    case 0:
+	                        _context3.prev = 0;
+	                        newPath = path + "/" + key;
+
+	                        console.log('New Path');
+	                        console.log(newPath);
+	                        _context3.next = 6;
+	                        return rootRef.child(newPath).remove();
+
+	                    case 6:
+	                        deletedConcept = _context3.sent;
+	                        return _context3.abrupt("return", deletedConcept);
+
+	                    case 10:
+	                        _context3.prev = 10;
+	                        _context3.t0 = _context3["catch"](0);
+	                        return _context3.abrupt("return", _context3.t0);
+
+	                    case 13:
+	                    case "end":
+	                        return _context3.stop();
+	                }
+	            }
+	        }, _callee3, this, [[0, 10]]);
+	    }));
+	};
+	var createUser = function createUser(email, password) {
+	    return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee4() {
+	        var ref, userData;
+	        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+	            while (1) {
+	                switch (_context4.prev = _context4.next) {
+	                    case 0:
 	                        ref = new Firebase("\"https://prendus.firebaseio.com/\"");
-	                        _context3.next = 3;
+	                        _context4.next = 3;
 	                        return ref.createUser({
 	                            email: email,
 	                            password: password
 	                        });
 
 	                    case 3:
-	                        userData = _context3.sent;
-	                        return _context3.abrupt("return", userData);
+	                        userData = _context4.sent;
+	                        return _context4.abrupt("return", userData);
 
 	                    case 5:
 	                    case "end":
-	                        return _context3.stop();
+	                        return _context4.stop();
 	                }
 	            }
-	        }, _callee3, this);
+	        }, _callee4, this);
 	    }));
 	};
 	var logInUser = function logInUser(email, password) {
-	    return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee4() {
+	    return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee5() {
 	        var auth;
-	        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+	        return regeneratorRuntime.wrap(function _callee5$(_context5) {
 	            while (1) {
-	                switch (_context4.prev = _context4.next) {
+	                switch (_context5.prev = _context5.next) {
 	                    case 0:
-	                        _context4.next = 2;
+	                        _context5.next = 2;
 	                        return Firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
 	                            var errorCode = error.code;
 	                            var errorMessage = error.message;
 	                        });
 
 	                    case 2:
-	                        auth = _context4.sent;
-	                        return _context4.abrupt("return", auth);
+	                        auth = _context5.sent;
+	                        return _context5.abrupt("return", auth);
 
 	                    case 4:
 	                    case "end":
-	                        return _context4.stop();
+	                        return _context5.stop();
 	                }
 	            }
-	        }, _callee4, this);
+	        }, _callee5, this);
 	    }));
 	};
 	var logOutUser = function logOutUser() {
@@ -422,6 +502,7 @@
 	    set: set,
 	    push: push,
 	    get: get,
+	    deleteConcept: deleteConcept,
 	    createUser: createUser,
 	    logInUser: logInUser,
 	    logOutUser: logOutUser
@@ -1012,8 +1093,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 7 */,
-/* 8 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1126,9 +1206,12 @@
 
 	                    case 3:
 	                        concepts = _context3.sent;
+
+	                        console.log(concepts);
+	                        console.log(concepts.val());
 	                        return _context3.abrupt('return', concepts.val());
 
-	                    case 5:
+	                    case 7:
 	                    case 'end':
 	                        return _context3.stop();
 	                }
@@ -1136,10 +1219,34 @@
 	        }, _callee3, this);
 	    }));
 	};
+	var deleteConcept = function deleteConcept(key) {
+	    return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee4() {
+	        var path, conceptDelete;
+	        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+	            while (1) {
+	                switch (_context4.prev = _context4.next) {
+	                    case 0:
+	                        path = conceptPath;
+	                        _context4.next = 3;
+	                        return _firebaseService.FirebaseService.deleteConcept('concepts', key);
+
+	                    case 3:
+	                        conceptDelete = _context4.sent;
+	                        return _context4.abrupt('return', conceptDelete);
+
+	                    case 5:
+	                    case 'end':
+	                        return _context4.stop();
+	                }
+	            }
+	        }, _callee4, this);
+	    }));
+	};
 	var ConceptModel = exports.ConceptModel = {
 	    save: save,
 	    getById: getById,
-	    getConcepts: getConcepts
+	    getConcepts: getConcepts,
+	    deleteConcept: deleteConcept
 	};
 
 /***/ }

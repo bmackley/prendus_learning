@@ -50,4 +50,21 @@ export const Actions = {
             }
         }
     },
+    deleteConcept: {
+        type: 'DELETE_CONCEPT',
+        execute: async (context, key) => {
+          console.log('Actions Delete')
+            try {
+              let deletedConcept = await ConceptModel.deleteConcept(key);
+              console.log('deletedConcept');
+              console.log(deletedConcept);
+              context.action = {
+                  type: Actions.deleteConcept.type,
+                  concepts: concepts,
+              }
+            }catch(error){
+              return(error)
+            }
+        }
+    },
 };

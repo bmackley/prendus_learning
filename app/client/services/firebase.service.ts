@@ -29,10 +29,17 @@ const get = async (path) => {
     const concepts = await rootRef.child(path).once('value')
     return concepts;
 };
-
+const deleteConcept = async (path, key) => {
+    try{
+      let newPath = path + "/" + key;
+      console.log('New Path')
+      console.log(newPath)
+      let deletedConcept = await rootRef.child(newPath).remove();
+      return deletedConcept;
+    }catch(error){return error;}
+};
 const createUser = async (email, password) => {
     const ref = new Firebase(`"https://prendus.firebaseio.com/"`);
-
     const userData = await ref.createUser({
         email,
         password
@@ -62,6 +69,7 @@ export const FirebaseService = {
     set,
     push,
     get,
+    deleteConcept,
     createUser,
     logInUser,
     logOutUser

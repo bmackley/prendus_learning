@@ -17,6 +17,7 @@ const save = async (id, data) => {
 const getById = async (id) => {
     const path = classPath + id;
     const problem = await FirebaseService.get(path);
+    console.log(problem)
     return problem;
 };
 

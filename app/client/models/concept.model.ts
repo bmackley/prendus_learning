@@ -22,11 +22,19 @@ const getById = async (id) => {
 const getConcepts = async () => {
     const path = conceptPath;
     const concepts = await FirebaseService.get(path);
+    console.log(concepts);
+    console.log(concepts.val());
     return concepts.val();
+};
+const deleteConcept = async (key) => {
+    const path = conceptPath;
+    let conceptDelete = await FirebaseService.deleteConcept('concepts', key);
+    return conceptDelete;
 };
 
 export const ConceptModel = {
     save,
     getById,
-    getConcepts
+    getConcepts,
+    deleteConcept,
 }

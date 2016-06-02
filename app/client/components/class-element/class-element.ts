@@ -10,15 +10,23 @@
     mapStateToThis: function(e) {
         let firebaseConcepts = e.detail.state.concepts.concepts;
         for (let key in firebaseConcepts){
+          console.log(key)
           let newConceptDemo = {
             title: firebaseConcepts[key].title,
             Creator: firebaseConcepts[key].user,
+            key: key,
           }
           this.push('concepts', newConceptDemo)
         }
     },
     addConcept: function(e){
       addDialog.open();
+    },
+    deleteItem: function(e){
+      console.log('delete')
+      //get the position here (or id, whatever is easier) to delete it.
+      console.log(e.target.id)
+      Actions.deleteConcept.execute(this, e.target.id);
     },
     toggle: function(e) {
       let collapseTarget = (e.target.id);
