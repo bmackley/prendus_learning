@@ -1,15 +1,13 @@
 export const InitialState = {
+    //This is to store local state (not persisted in Firebase)
     currentUser: {
-      uid: '',
-      email: '',
-      permissions: '',
     },
     concepts: {
-      concept: {},
-      // uid: '',
-      // title: '',
-      // pos: 0,
-      // creator: '',
-      // subjects: [],
-    }
+      //this is what it should look like
+      "f7sd8f7sd98fs7df": {
+          title: '',
+      }
+    },
+    deletedConcept: '',
+    
 };

@@ -415,9 +415,9 @@
 	        }, _callee2, this);
 	    }));
 	};
-	var deleteConcept = function deleteConcept(path, key) {
+	var deleteItem = function deleteItem(path, key) {
 	    return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee3() {
-	        var newPath, deletedConcept;
+	        var newPath;
 	        return regeneratorRuntime.wrap(function _callee3$(_context3) {
 	            while (1) {
 	                switch (_context3.prev = _context3.next) {
@@ -427,24 +427,21 @@
 
 	                        console.log('New Path');
 	                        console.log(newPath);
-	                        _context3.next = 6;
-	                        return rootRef.child(newPath).remove();
+	                        rootRef.child(newPath).remove();
+	                        _context3.next = 10;
+	                        break;
 
-	                    case 6:
-	                        deletedConcept = _context3.sent;
-	                        return _context3.abrupt("return", deletedConcept);
-
-	                    case 10:
-	                        _context3.prev = 10;
+	                    case 7:
+	                        _context3.prev = 7;
 	                        _context3.t0 = _context3["catch"](0);
 	                        return _context3.abrupt("return", _context3.t0);
 
-	                    case 13:
+	                    case 10:
 	                    case "end":
 	                        return _context3.stop();
 	                }
 	            }
-	        }, _callee3, this, [[0, 10]]);
+	        }, _callee3, this, [[0, 7]]);
 	    }));
 	};
 	var createUser = function createUser(email, password) {
@@ -498,6 +495,38 @@
 	        }, _callee5, this);
 	    }));
 	};
+	var currentUser = function currentUser() {
+	    return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee6() {
+	        var userData;
+	        return regeneratorRuntime.wrap(function _callee6$(_context6) {
+	            while (1) {
+	                switch (_context6.prev = _context6.next) {
+	                    case 0:
+	                        _context6.next = 2;
+	                        return Firebase.auth().onAuthStateChanged(function (user) {
+	                            if (user) {
+	                                console.log(user.email);
+	                                return user;
+	                            } else {
+	                                return '';
+	                            }
+	                        });
+
+	                    case 2:
+	                        userData = _context6.sent;
+
+	                        console.log('outside user info');
+	                        console.log(userData);
+	                        return _context6.abrupt("return", userData);
+
+	                    case 6:
+	                    case "end":
+	                        return _context6.stop();
+	                }
+	            }
+	        }, _callee6, this);
+	    }));
+	};
 	var logOutUser = function logOutUser() {
 	    var ref = new Firebase("\"https://prendus.firebaseio.com/\"");
 	    ref.unauth();
@@ -507,9 +536,10 @@
 	    set: set,
 	    push: push,
 	    get: get,
-	    deleteConcept: deleteConcept,
+	    deleteItem: deleteItem,
 	    createUser: createUser,
 	    logInUser: logInUser,
+	    currentUser: currentUser,
 	    logOutUser: logOutUser
 	};
 

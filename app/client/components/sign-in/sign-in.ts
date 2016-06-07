@@ -6,7 +6,7 @@ Polymer({
     'signin-submit.tap': 'loginTap'
   },
   loginTap: function(e){
-    Actions.setCurrentUser.execute(this, this.$.loginEmail.value, this.$.loginPassword.value);
+    Actions.loginUser.execute(this, this.$.loginEmail.value, this.$.loginPassword.value);
     let location = 'createclass'
     window.history.pushState({}, '', location);
     this.fire('location-changed', {}, {node: window});

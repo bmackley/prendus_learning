@@ -42,7 +42,7 @@
     },
     changeURL: function(e){
       console.log(e.target.id)
-      let location = e.target.id
+      const location = e.target.id
       window.history.pushState({}, '', location);
       this.fire('location-changed', {}, {node: window});
     },

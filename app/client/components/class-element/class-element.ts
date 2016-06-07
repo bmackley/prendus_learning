@@ -6,8 +6,8 @@
     listeners: {
 
     },
-    // //mapStateToThis works with event changes.  If it changes somewhere else in the app, it will update here.
     mapStateToThis: function(e) {
+      console.log(e.detail)
         let firebaseConcepts = e.detail.state.concepts.concepts;
         for (let key in firebaseConcepts){
           console.log(key)
@@ -18,6 +18,7 @@
           }
           this.push('concepts', newConceptDemo)
         }
+      console.log(e)
     },
     addConcept: function(e){
       addDialog.open();
@@ -27,10 +28,20 @@
       //get the position here (or id, whatever is easier) to delete it.
       console.log(e.target.id)
       Actions.deleteConcept.execute(this, e.target.id);
+      console.log('this is the element')
+      let conceptID = e.target.id
+      console.log(conceptID);
     },
     toggle: function(e) {
       let collapseTarget = (e.target.id);
       this.querySelector('#Concept' + collapseTarget).toggle();
+    },
+    sortableEnded: function(e){
+      if(e.newIndex){
+        console.log(e.newIndex);
+        console.log(e.oldIndex);
+        Actions.orderConcepts.execute(this, e.oldIndex, e.newIndex);
+      }
     },
     addConceptFormDone: function(e){
       e.preventDefault();
@@ -42,7 +53,6 @@
           title: this.$.conceptFormName.value
         }
         this.push('concepts', newConceptDemo)
-        console.log(newConceptDemo)
         newConceptDemo.title = this.$.conceptFormName.value;
         Actions.setConcepts.execute(this, this.$.conceptFormName.value);
       }
@@ -68,7 +78,6 @@
       Actions.getConcepts.execute(this);
       this.rootReducer = function(state, action) {
           if (!state) {
-            console.log('Hello')
             return initialState;
           }
           switch(action.type) {

@@ -28,8 +28,13 @@ const getConcepts = async () => {
 };
 const deleteConcept = async (key) => {
     const path = conceptPath;
-    let conceptDelete = await FirebaseService.deleteConcept('concepts', key);
-    return conceptDelete;
+    let conceptDelete = await FirebaseService.deleteItem('concept', key);
+};
+const orderConcepts = async (concepts, old_pos, new_pos) => {
+    const path = conceptPath;
+    //get the list of concepts
+    // let orderConcepts = await FirebaseService.update('concepts', old_pos, new_pos);
+    // return conceptPath;
 };
 
 export const ConceptModel = {

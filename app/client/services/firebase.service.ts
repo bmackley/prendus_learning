@@ -29,13 +29,13 @@ const get = async (path) => {
     const concepts = await rootRef.child(path).once('value')
     return concepts;
 };
-const deleteConcept = async (path, key) => {
+const deleteItem = async (path, key) => {
     try{
       let newPath = path + "/" + key;
       console.log('New Path')
       console.log(newPath)
-      let deletedConcept = await rootRef.child(newPath).remove();
-      return deletedConcept;
+      rootRef.child(newPath).remove();
+      //There use to be an onComplete parameter that was passed into remove, but can't find it in the new Firebase Docs
     }catch(error){return error;}
 };
 const createUser = async (email, password) => {
@@ -56,6 +56,21 @@ const logInUser = async (email, password) => {
     });
     return auth;
 };
+const currentUser = async () => {
+  const userData = await Firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      // User is signed in.
+      console.log(user.email);
+      return user;
+    } else {
+      // No user is signed in.
+      return '';
+    }
+  });
+  console.log('outside user info')
+  console.log(userData)
+  return(userData)
+};
 
 const logOutUser = () => {
     const ref = new Firebase(`"https://prendus.firebaseio.com/"`);
@@ -69,8 +84,9 @@ export const FirebaseService = {
     set,
     push,
     get,
-    deleteConcept,
+    deleteItem,
     createUser,
     logInUser,
+    currentUser,
     logOutUser
 };
