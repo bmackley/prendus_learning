@@ -21,7 +21,6 @@ const checkUserAuth = {
     type: 'CHECK_USER_AUTH',
     execute: async (context) => {
         try {
-          console.log('Check User Auth in Actions');
           const success = await FirebaseService.currentUser();
           context.action = {
             type: Actions.checkUserAuth.type,
@@ -38,7 +37,7 @@ const setConcepts = {
     execute: async (context, title) => {
         try {
           //Need to figure out what else to add here
-          //get the user from the state
+          //get the user from the state to pass in here
           const user = 'bmackley@byu.edu';
           const conceptData = {
             title: title,
@@ -72,7 +71,6 @@ const getConcepts = {
 const deleteConcept = {
     type: 'DELETE_CONCEPT',
     execute: async (context, key) => {
-      console.log('Actions Delete')
         try {
           await ConceptModel.deleteConcept(key);
           context.action = {

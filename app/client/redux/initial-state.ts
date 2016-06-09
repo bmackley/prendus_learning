@@ -4,10 +4,7 @@ export const InitialState = {
     },
     concepts: {
       //this is what it should look like
-      "f7sd8f7sd98fs7df": {
-          title: '',
-      }
     },
     deletedConcept: '',
-    
+
 };

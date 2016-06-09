@@ -52,18 +52,27 @@
 	    is: "class-element",
 	    listeners: {},
 	    mapStateToThis: function mapStateToThis(e) {
-	        console.log(e.detail);
-	        var firebaseConcepts = e.detail.state.concepts.concepts;
-	        for (var key in firebaseConcepts) {
-	            console.log(key);
-	            var newConceptDemo = {
-	                title: firebaseConcepts[key].title,
-	                Creator: firebaseConcepts[key].user,
-	                key: key
-	            };
-	            this.push('concepts', newConceptDemo);
+	        console.log(e.detail.state);
+	        if (e.detail.state.deletedConcept) {
+	            console.log(this.concepts.length);
+	            for (var i = 0; i < this.concepts.length; i++) {
+	                console.log(this.concepts[i]);
+	                console.log(this.concepts[i].key, 'Deleted concept ', e.detail.state.deletedConcept);
+	                if (this.concepts[i].key === e.detail.state.deletedConcept) {
+	                    this.splice('concepts', i, 1);
+	                }
+	            }
+	            console.log('delete the concept');
+	        } else {
+	            if (this.concepts.length === 0) {
+	                var firebaseConcepts = e.detail.state.concepts;
+	                for (var key in firebaseConcepts) {
+	                    firebaseConcepts[key].key = key;
+	                    this.push('concepts', firebaseConcepts[key]);
+	                }
+	            }
+	            console.log(this.concepts);
 	        }
-	        console.log(e);
 	    },
 	    addConcept: function addConcept(e) {
 	        addDialog.open();
@@ -72,20 +81,10 @@
 	        console.log('delete');
 	        console.log(e.target.id);
 	        _actions.Actions.deleteConcept.execute(this, e.target.id);
-	        console.log('this is the element');
-	        var conceptID = e.target.id;
-	        console.log(conceptID);
 	    },
 	    toggle: function toggle(e) {
 	        var collapseTarget = e.target.id;
 	        this.querySelector('#Concept' + collapseTarget).toggle();
-	    },
-	    sortableEnded: function sortableEnded(e) {
-	        if (e.newIndex) {
-	            console.log(e.newIndex);
-	            console.log(e.oldIndex);
-	            _actions.Actions.orderConcepts.execute(this, e.oldIndex, e.newIndex);
-	        }
 	    },
 	    addConceptFormDone: function addConceptFormDone(e) {
 	        e.preventDefault();
@@ -95,6 +94,7 @@
 	                title: this.$.conceptFormName.value
 	            };
 	            this.push('concepts', newConceptDemo);
+	            console.log(newConceptDemo);
 	            newConceptDemo.title = this.$.conceptFormName.value;
 	            _actions.Actions.setConcepts.execute(this, this.$.conceptFormName.value);
 	        }
@@ -110,7 +110,7 @@
 	        },
 	        concepts: {
 	            type: Array,
-	            value: [{ title: 'Concept 1', pos: 1, Creator: 'Username 1', videos: { title: 'Concept1 Video' } }, { title: 'Concept 2', pos: 2, Creator: 'Username 2', videos: { title: 'Concept2 Video' } }, { title: 'Concept 3', pos: 3, Creator: 'Username 3', videos: { title: 'Concept3 Video' } }]
+	            value: []
 	        }
 	    },
 	    ready: function ready(e) {
@@ -118,30 +118,6 @@
 	            temp: 'initial temp'
 	        };
 	        _actions.Actions.getConcepts.execute(this);
-	        this.rootReducer = function (state, action) {
-	            if (!state) {
-	                return initialState;
-	            }
-	            switch (action.type) {
-	                case 'CLASS_CONCEPTS':
-	                    {
-	                        var newState = Object.assign({}, state);
-	                        newState.temp = action.newTemp;
-	                        return newState;
-	                    }
-	                case 'GET_CONCEPTS':
-	                    {
-	                        var newState = Object.assign({}, state);
-	                        newState.temp = action.newTemp;
-	                        return newState;
-	                    }
-	                default:
-	                    {
-	                        return state;
-	                    }
-	            }
-	            ;
-	        };
 	    }
 	});
 
@@ -234,35 +210,30 @@
 	                    switch (_context2.prev = _context2.next) {
 	                        case 0:
 	                            _context2.prev = 0;
-
-	                            console.log('Check User Auth in Actions');
-	                            _context2.next = 4;
+	                            _context2.next = 3;
 	                            return _firebaseService.FirebaseService.currentUser();
 
-	                        case 4:
+	                        case 3:
 	                            success = _context2.sent;
 
-	                            console.log('success');
-	                            console.log(success);
-	                            console.log('end Success');
 	                            context.action = {
 	                                type: Actions.checkUserAuth.type,
 	                                email: success
 	                            };
-	                            _context2.next = 14;
+	                            _context2.next = 10;
 	                            break;
 
-	                        case 11:
-	                            _context2.prev = 11;
+	                        case 7:
+	                            _context2.prev = 7;
 	                            _context2.t0 = _context2['catch'](0);
 	                            return _context2.abrupt('return', _context2.t0);
 
-	                        case 14:
+	                        case 10:
 	                        case 'end':
 	                            return _context2.stop();
 	                    }
 	                }
-	            }, _callee2, this, [[0, 11]]);
+	            }, _callee2, this, [[0, 7]]);
 	        }));
 	    }
 	};
@@ -353,30 +324,29 @@
 	                while (1) {
 	                    switch (_context5.prev = _context5.next) {
 	                        case 0:
-	                            console.log('Actions Delete');
-	                            _context5.prev = 1;
-	                            _context5.next = 4;
+	                            _context5.prev = 0;
+	                            _context5.next = 3;
 	                            return _conceptModel.ConceptModel.deleteConcept(key);
 
-	                        case 4:
+	                        case 3:
 	                            context.action = {
 	                                type: Actions.deleteConcept.type,
 	                                conceptKey: key
 	                            };
-	                            _context5.next = 10;
+	                            _context5.next = 9;
 	                            break;
 
-	                        case 7:
-	                            _context5.prev = 7;
-	                            _context5.t0 = _context5['catch'](1);
+	                        case 6:
+	                            _context5.prev = 6;
+	                            _context5.t0 = _context5['catch'](0);
 	                            return _context5.abrupt('return', _context5.t0);
 
-	                        case 10:
+	                        case 9:
 	                        case 'end':
 	                            return _context5.stop();
 	                    }
 	                }
-	            }, _callee5, this, [[1, 7]]);
+	            }, _callee5, this, [[0, 6]]);
 	        }));
 	    }
 	};
@@ -1350,12 +1320,9 @@
 
 	                    case 3:
 	                        concepts = _context3.sent;
-
-	                        console.log(concepts);
-	                        console.log(concepts.val());
 	                        return _context3.abrupt('return', concepts.val());
 
-	                    case 7:
+	                    case 5:
 	                    case 'end':
 	                        return _context3.stop();
 	                }

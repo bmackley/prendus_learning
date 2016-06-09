@@ -47,8 +47,10 @@
             <template id="conceptsList" is="dom-repeat" items={{concepts}}>
               <div>
                 <paper-icon-item>
-                  <iron-icon icon="editor:drag-handle" item-icon></iron-icon>
-                  <h3 on-click="toggle" id= {{item.pos}} data-id$="{{item.pos}}">{{item.title}} {{item.key}}</h3>
+                  <div>
+                    <h3 on-click="toggle" id= {{item.pos}} data-id$="{{item.pos}}">{{item.title}}</h3>
+                  </div>
+                  <iron-icon class = "end-justified"icon="editor:drag-handle" item-icon></iron-icon>
                   <iron-icon class = "end-justified" id = {{item.key}} icon="icons:delete" item-icon on-click="deleteItem"></iron-icon>
                 </paper-icon-item>
                 <iron-collapse class="conceptToggle" id= "Concept{{item.pos}}">

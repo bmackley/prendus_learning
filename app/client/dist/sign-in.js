@@ -152,35 +152,30 @@
 	                    switch (_context2.prev = _context2.next) {
 	                        case 0:
 	                            _context2.prev = 0;
-
-	                            console.log('Check User Auth in Actions');
-	                            _context2.next = 4;
+	                            _context2.next = 3;
 	                            return _firebaseService.FirebaseService.currentUser();
 
-	                        case 4:
+	                        case 3:
 	                            success = _context2.sent;
 
-	                            console.log('success');
-	                            console.log(success);
-	                            console.log('end Success');
 	                            context.action = {
 	                                type: Actions.checkUserAuth.type,
 	                                email: success
 	                            };
-	                            _context2.next = 14;
+	                            _context2.next = 10;
 	                            break;
 
-	                        case 11:
-	                            _context2.prev = 11;
+	                        case 7:
+	                            _context2.prev = 7;
 	                            _context2.t0 = _context2['catch'](0);
 	                            return _context2.abrupt('return', _context2.t0);
 
-	                        case 14:
+	                        case 10:
 	                        case 'end':
 	                            return _context2.stop();
 	                    }
 	                }
-	            }, _callee2, this, [[0, 11]]);
+	            }, _callee2, this, [[0, 7]]);
 	        }));
 	    }
 	};
@@ -271,30 +266,29 @@
 	                while (1) {
 	                    switch (_context5.prev = _context5.next) {
 	                        case 0:
-	                            console.log('Actions Delete');
-	                            _context5.prev = 1;
-	                            _context5.next = 4;
+	                            _context5.prev = 0;
+	                            _context5.next = 3;
 	                            return _conceptModel.ConceptModel.deleteConcept(key);
 
-	                        case 4:
+	                        case 3:
 	                            context.action = {
 	                                type: Actions.deleteConcept.type,
 	                                conceptKey: key
 	                            };
-	                            _context5.next = 10;
+	                            _context5.next = 9;
 	                            break;
 
-	                        case 7:
-	                            _context5.prev = 7;
-	                            _context5.t0 = _context5['catch'](1);
+	                        case 6:
+	                            _context5.prev = 6;
+	                            _context5.t0 = _context5['catch'](0);
 	                            return _context5.abrupt('return', _context5.t0);
 
-	                        case 10:
+	                        case 9:
 	                        case 'end':
 	                            return _context5.stop();
 	                    }
 	                }
-	            }, _callee5, this, [[1, 7]]);
+	            }, _callee5, this, [[0, 6]]);
 	        }));
 	    }
 	};
@@ -1268,12 +1262,9 @@
 
 	                    case 3:
 	                        concepts = _context3.sent;
-
-	                        console.log(concepts);
-	                        console.log(concepts.val());
 	                        return _context3.abrupt('return', concepts.val());
 
-	                    case 7:
+	                    case 5:
 	                    case 'end':
 	                        return _context3.stop();
 	                }
