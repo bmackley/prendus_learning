@@ -20,8 +20,12 @@ const getById = async (id) => {
     console.log(problem)
     return problem;
 };
+const orderConcepts = async (id) => {
+
+};
 
 export const ClassModel = {
     save,
-    getById
+    getById,
+    orderConcepts,
 }

@@ -75,6 +75,7 @@
 	    var state = arguments.length <= 0 || arguments[0] === undefined ? _initialState.InitialState : arguments[0];
 	    var action = arguments[1];
 
+	    state.newConcept = '';
 	    switch (action.type) {
 	        case _actions.Actions.setCurrentUser.type:
 	            {
@@ -88,26 +89,42 @@
 	                _newState.currentUser.email = action.user;
 	                return _newState;
 	            }
-	        case _actions.Actions.setConcepts.type:
+	        case _actions.Actions.addConcept.type:
 	            {
 	                var _newState2 = Object.assign({}, state);
-	                _newState2.concepts = {
+	                var conceptDetail = action.key;
+	                _newState2.concepts[action.key] = action;
+	                _newState2.newConcept = _newState2.concepts[action.key];
+	                _newState2.deletedConcept = '';
+	                return _newState2;
+	            }
+	        case _actions.Actions.setConcepts.type:
+	            {
+	                var _newState3 = Object.assign({}, state);
+	                _newState3.concepts = {
 	                    title: action.title
 	                };
-	                return _newState2;
+	                return _newState3;
 	            }
 	        case _actions.Actions.deleteConcept.type:
 	            {
-	                console.log('in the reducer to delete the concept');
-	                var _newState3 = Object.assign({}, state);
-	                _newState3.deletedConcept = action.conceptKey;
-	                return _newState3;
+	                var _newState4 = Object.assign({}, state);
+	                var deletedConcept = action.conceptKey;
+	                for (var item in _newState4.concepts) {
+	                    console.log(item);
+	                    console.log(_newState4.concepts.item);
+	                    if (item === deletedConcept) {
+	                        delete _newState4.concepts[item];
+	                    }
+	                }
+	                _newState4.deletedConcept = action.conceptKey;
+	                return _newState4;
 	            }
 	        case _actions.Actions.getConcepts.type:
 	            {
-	                var _newState4 = Object.assign({}, state);
-	                _newState4.concepts = action.concepts;
-	                return _newState4;
+	                var _newState5 = Object.assign({}, state);
+	                _newState5.concepts = action.concepts;
+	                return _newState5;
 	            }
 	        default:
 	            {
@@ -128,7 +145,8 @@
 	var InitialState = exports.InitialState = {
 	    currentUser: {},
 	    concepts: {},
-	    deletedConcept: ''
+	    deletedConcept: '',
+	    newConcept: ''
 	};
 
 /***/ },
@@ -247,122 +265,119 @@
 	};
 	var setConcepts = {
 	    type: 'SET_CONCEPTS',
-	    execute: function execute(context, title) {
+	    execute: function execute(context, newConcept) {
 	        return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee3() {
-	            var user, conceptData, conceptSuccess;
+	            var conceptSuccess;
 	            return regeneratorRuntime.wrap(function _callee3$(_context3) {
 	                while (1) {
 	                    switch (_context3.prev = _context3.next) {
 	                        case 0:
 	                            _context3.prev = 0;
-	                            user = 'bmackley@byu.edu';
-	                            conceptData = {
-	                                title: title,
-	                                user: user
-	                            };
-	                            _context3.next = 5;
-	                            return _conceptModel.ConceptModel.save(null, conceptData);
+	                            _context3.next = 3;
+	                            return _conceptModel.ConceptModel.save(null, newConcept);
 
-	                        case 5:
+	                        case 3:
 	                            conceptSuccess = _context3.sent;
 
-	                            context.action = {
-	                                type: Actions.setConcepts.type,
-	                                concept: conceptSuccess.title
-	                            };
-	                            _context3.next = 12;
+	                            context.action = newConcept;
+	                            _context3.next = 10;
 	                            break;
 
-	                        case 9:
-	                            _context3.prev = 9;
+	                        case 7:
+	                            _context3.prev = 7;
 	                            _context3.t0 = _context3['catch'](0);
 	                            return _context3.abrupt('return', _context3.t0);
 
-	                        case 12:
+	                        case 10:
 	                        case 'end':
 	                            return _context3.stop();
 	                    }
 	                }
-	            }, _callee3, this, [[0, 9]]);
+	            }, _callee3, this, [[0, 7]]);
 	        }));
 	    }
 	};
-	var getConcepts = {
-	    type: 'GET_CONCEPTS',
-	    execute: function execute(context) {
+	var addConcept = {
+	    type: 'ADD_CONCEPT',
+	    execute: function execute(context, newConcept, conceptsArray) {
 	        return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee4() {
-	            var concepts;
+	            var conceptSuccess;
 	            return regeneratorRuntime.wrap(function _callee4$(_context4) {
 	                while (1) {
 	                    switch (_context4.prev = _context4.next) {
 	                        case 0:
 	                            _context4.prev = 0;
 	                            _context4.next = 3;
-	                            return _conceptModel.ConceptModel.getConcepts();
+	                            return _conceptModel.ConceptModel.save(null, newConcept);
 
 	                        case 3:
-	                            concepts = _context4.sent;
+	                            conceptSuccess = _context4.sent;
 
+	                            conceptsArray.conceptSuccess = newConcept;
 	                            context.action = {
-	                                type: Actions.getConcepts.type,
-	                                concepts: concepts
+	                                type: Actions.addConcept.type,
+	                                key: conceptSuccess,
+	                                pos: newConcept.pos,
+	                                title: newConcept.title
 	                            };
-	                            _context4.next = 10;
+	                            _context4.next = 11;
 	                            break;
 
-	                        case 7:
-	                            _context4.prev = 7;
+	                        case 8:
+	                            _context4.prev = 8;
 	                            _context4.t0 = _context4['catch'](0);
 	                            return _context4.abrupt('return', _context4.t0);
 
-	                        case 10:
+	                        case 11:
 	                        case 'end':
 	                            return _context4.stop();
 	                    }
 	                }
-	            }, _callee4, this, [[0, 7]]);
+	            }, _callee4, this, [[0, 8]]);
 	        }));
 	    }
 	};
-	var deleteConcept = {
-	    type: 'DELETE_CONCEPT',
-	    execute: function execute(context, key) {
+	var getConcepts = {
+	    type: 'GET_CONCEPTS',
+	    execute: function execute(context) {
 	        return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee5() {
+	            var concepts;
 	            return regeneratorRuntime.wrap(function _callee5$(_context5) {
 	                while (1) {
 	                    switch (_context5.prev = _context5.next) {
 	                        case 0:
 	                            _context5.prev = 0;
 	                            _context5.next = 3;
-	                            return _conceptModel.ConceptModel.deleteConcept(key);
+	                            return _conceptModel.ConceptModel.getConcepts();
 
 	                        case 3:
+	                            concepts = _context5.sent;
+
 	                            context.action = {
-	                                type: Actions.deleteConcept.type,
-	                                conceptKey: key
+	                                type: Actions.getConcepts.type,
+	                                concepts: concepts
 	                            };
-	                            _context5.next = 9;
+	                            _context5.next = 10;
 	                            break;
 
-	                        case 6:
-	                            _context5.prev = 6;
+	                        case 7:
+	                            _context5.prev = 7;
 	                            _context5.t0 = _context5['catch'](0);
 	                            return _context5.abrupt('return', _context5.t0);
 
-	                        case 9:
+	                        case 10:
 	                        case 'end':
 	                            return _context5.stop();
 	                    }
 	                }
-	            }, _callee5, this, [[0, 6]]);
+	            }, _callee5, this, [[0, 7]]);
 	        }));
 	    }
 	};
-	var orderConcepts = {
-	    type: 'ORDER_CONCEPTS',
-	    execute: function execute(context, old_pos, new_pos) {
+	var deleteConcept = {
+	    type: 'DELETE_CONCEPT',
+	    execute: function execute(context, key, conceptsArray) {
 	        return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee6() {
-	            var deletedConcept;
 	            return regeneratorRuntime.wrap(function _callee6$(_context6) {
 	                while (1) {
 	                    switch (_context6.prev = _context6.next) {
@@ -372,28 +387,44 @@
 	                            return _conceptModel.ConceptModel.deleteConcept(key);
 
 	                        case 3:
-	                            deletedConcept = _context6.sent;
-
-	                            console.log('deletedConcept');
-	                            console.log(deletedConcept);
 	                            context.action = {
 	                                type: Actions.deleteConcept.type,
-	                                concepts: deletedConcept
+	                                conceptKey: key
 	                            };
-	                            _context6.next = 12;
+	                            _context6.next = 9;
 	                            break;
 
-	                        case 9:
-	                            _context6.prev = 9;
+	                        case 6:
+	                            _context6.prev = 6;
 	                            _context6.t0 = _context6['catch'](0);
 	                            return _context6.abrupt('return', _context6.t0);
 
-	                        case 12:
+	                        case 9:
 	                        case 'end':
 	                            return _context6.stop();
 	                    }
 	                }
-	            }, _callee6, this, [[0, 9]]);
+	            }, _callee6, this, [[0, 6]]);
+	        }));
+	    }
+	};
+	var orderConcepts = {
+	    type: 'ORDER_CONCEPTS',
+	    execute: function execute(context, conceptsArray) {
+	        return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee7() {
+	            return regeneratorRuntime.wrap(function _callee7$(_context7) {
+	                while (1) {
+	                    switch (_context7.prev = _context7.next) {
+	                        case 0:
+	                            _context7.next = 2;
+	                            return _conceptModel.ConceptModel.orderConcepts(conceptsArray);
+
+	                        case 2:
+	                        case 'end':
+	                            return _context7.stop();
+	                    }
+	                }
+	            }, _callee7, this);
 	        }));
 	    }
 	};
@@ -402,7 +433,9 @@
 	    checkUserAuth: checkUserAuth,
 	    setConcepts: setConcepts,
 	    getConcepts: getConcepts,
-	    deleteConcept: deleteConcept
+	    deleteConcept: deleteConcept,
+	    orderConcepts: orderConcepts,
+	    addConcept: addConcept
 	};
 
 /***/ },
@@ -1256,7 +1289,7 @@
 	var conceptPath = 'concept/';
 	var save = function save(id, data) {
 	    return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee() {
-	        var path, _path;
+	        var path, _path, newConcept;
 
 	        return regeneratorRuntime.wrap(function _callee$(_context) {
 	            while (1) {
@@ -1276,13 +1309,12 @@
 
 	                    case 7:
 	                        _path = conceptPath;
-
-	                        console.log(_firebaseService.FirebaseService);
-	                        _context.next = 11;
+	                        _context.next = 10;
 	                        return _firebaseService.FirebaseService.push(_path, data);
 
-	                    case 11:
-	                        return _context.abrupt('return', _context.sent);
+	                    case 10:
+	                        newConcept = _context.sent;
+	                        return _context.abrupt('return', newConcept.key);
 
 	                    case 12:
 	                    case 'end':
@@ -1360,16 +1392,34 @@
 	        }, _callee4, this);
 	    }));
 	};
-	var orderConcepts = function orderConcepts(concepts, old_pos, new_pos) {
+	var orderConcepts = function orderConcepts(conceptsArray) {
 	    return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee5() {
-	        var path;
+	        var item, path, data;
 	        return regeneratorRuntime.wrap(function _callee5$(_context5) {
 	            while (1) {
 	                switch (_context5.prev = _context5.next) {
 	                    case 0:
-	                        path = conceptPath;
+	                        _context5.t0 = regeneratorRuntime.keys(conceptsArray);
 
 	                    case 1:
+	                        if ((_context5.t1 = _context5.t0()).done) {
+	                            _context5.next = 10;
+	                            break;
+	                        }
+
+	                        item = _context5.t1.value;
+	                        path = conceptPath + '/' + conceptsArray[item].key;
+	                        data = { pos: conceptsArray[item].pos };
+
+	                        console.log(path);
+	                        _context5.next = 8;
+	                        return _firebaseService.FirebaseService.set(path, data);
+
+	                    case 8:
+	                        _context5.next = 1;
+	                        break;
+
+	                    case 10:
 	                    case 'end':
 	                        return _context5.stop();
 	                }
@@ -1381,7 +1431,8 @@
 	    save: save,
 	    getById: getById,
 	    getConcepts: getConcepts,
-	    deleteConcept: deleteConcept
+	    deleteConcept: deleteConcept,
+	    orderConcepts: orderConcepts
 	};
 
 /***/ }

@@ -34,21 +34,29 @@ const checkUserAuth = {
 };
 const setConcepts = {
     type: 'SET_CONCEPTS',
-    execute: async (context, title) => {
+    execute: async (context, newConcept) => {
         try {
-          //Need to figure out what else to add here
-          //get the user from the state to pass in here
-          const user = 'bmackley@byu.edu';
-          const conceptData = {
-            title: title,
-            user: user
-          }
-          // let success = await FirebaseService.push('concept', conceptData);
-          const conceptSuccess = await ConceptModel.save(null, conceptData);
+          const conceptSuccess = await ConceptModel.save(null, newConcept);
+          context.action = newConcept;
+        }catch(error){
+          return(error)
+        }
+    }
+};
+const addConcept = {
+    type: 'ADD_CONCEPT',
+    execute: async (context, newConcept, conceptsArray) => {
+        try {
+          const conceptSuccess = await ConceptModel.save(null, newConcept);
+          //What exactly should set here?  What comes back from Firebase, or can we just send the newConcept Object that was passed in if we know it was successful?
+          conceptsArray.conceptSuccess = newConcept;
           context.action = {
-              type: Actions.setConcepts.type,
-              concept: conceptSuccess.title,
+              type: Actions.addConcept.type,
+              key: conceptSuccess,
+              pos: newConcept.pos,
+              title: newConcept.title
           }
+
         }catch(error){
           return(error)
         }
@@ -70,7 +78,7 @@ const getConcepts = {
 };
 const deleteConcept = {
     type: 'DELETE_CONCEPT',
-    execute: async (context, key) => {
+    execute: async (context, key, conceptsArray) => {
         try {
           await ConceptModel.deleteConcept(key);
           context.action = {
@@ -84,18 +92,9 @@ const deleteConcept = {
 };
 const orderConcepts = {
     type: 'ORDER_CONCEPTS',
-    execute: async (context, old_pos, new_pos) => {
-        try {
-          const deletedConcept = await ConceptModel.deleteConcept(key);
-          console.log('deletedConcept');
-          console.log(deletedConcept);
-          context.action = {
-              type: Actions.deleteConcept.type,
-              concepts: deletedConcept,
-          }
-        }catch(error){
-          return(error)
-        }
+    execute: async (context, conceptsArray) => {
+        //thre use cases: Reorder concepts, delete a concept
+        await ConceptModel.orderConcepts(conceptsArray);
     }
 };
 
@@ -105,4 +104,6 @@ export const Actions = {
     setConcepts,
     getConcepts,
     deleteConcept,
+    orderConcepts,
+    addConcept,
 };

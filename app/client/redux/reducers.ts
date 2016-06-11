@@ -2,6 +2,7 @@ import {InitialState} from './initial-state.ts';
 import {Actions} from './actions.ts';
 
 export function rootReducer(state = InitialState, action) {
+    state.newConcept = ''; //Does this set it to null every time?
     switch(action.type) {
         case Actions.setCurrentUser.type: {
             const newState = Object.assign({}, state);
@@ -12,6 +13,14 @@ export function rootReducer(state = InitialState, action) {
             const newState = Object.assign({}, state);
             newState.currentUser.email = action.user;
             return newState;
+        }
+        case Actions.addConcept.type: {
+          const newState = Object.assign({}, state);
+          const conceptDetail = action.key;
+          newState.concepts[action.key] = action;
+          newState.newConcept = newState.concepts[action.key];
+          newState.deletedConcept = '';//Needs to be included in every Action
+          return newState;
         }
         case Actions.setConcepts.type: {
             const newState = Object.assign({}, state);
@@ -24,10 +33,15 @@ export function rootReducer(state = InitialState, action) {
             return newState;
         }
         case Actions.deleteConcept.type: {
-            console.log('in the reducer to delete the concept')
-            //I want to be able to skip this step and just do it in Polymer but I don't know if that would be right
-            //also, I'm not quite sure how to handle the state by only pushing the action that corresponds to this
             const newState = Object.assign({}, state);
+            const deletedConcept = action.conceptKey;
+            for(const item in newState.concepts){
+                console.log(item);
+                console.log(newState.concepts.item);
+                if(item === deletedConcept){
+                  delete newState.concepts[item];
+                }
+            }
             newState.deletedConcept = action.conceptKey;
             return newState;
         }

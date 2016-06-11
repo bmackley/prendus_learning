@@ -43,7 +43,7 @@
         <h1 contenteditable="true">
           {{item.instructor}}
         </h1>
-        <sortable-js on-end="sortableEnded">
+        <sortable-js on-sort="sortableEnded">
             <template id="conceptsList" is="dom-repeat" items={{concepts}}>
               <div>
                 <paper-icon-item>

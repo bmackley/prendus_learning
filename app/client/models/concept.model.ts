@@ -10,8 +10,9 @@ const save = async (id, data) => {
     }
     else {
         const path = conceptPath;
-        console.log(FirebaseService)
-        return await FirebaseService.push(path, data);
+        //figure out what happens when an error is returned
+        const newConcept =  await FirebaseService.push(path, data);
+        return newConcept.key;
     }
 };
 const getById = async (id) => {
@@ -28,8 +29,14 @@ const deleteConcept = async (key) => {
     const path = conceptPath;
     let conceptDelete = await FirebaseService.deleteItem('concept', key);
 };
-const orderConcepts = async (concepts, old_pos, new_pos) => {
-    const path = conceptPath;
+const orderConcepts = async (conceptsArray) => {
+    for(let item in conceptsArray){
+      const path = conceptPath + '/' + conceptsArray[item].key;
+      const data = {pos: conceptsArray[item].pos};
+      console.log(path)
+      //Need to change this to an update function
+      await FirebaseService.set(path, data)
+    }
     //get the list of concepts
     // let orderConcepts = await FirebaseService.update('concepts', old_pos, new_pos);
     // return conceptPath;
@@ -40,4 +47,5 @@ export const ConceptModel = {
     getById,
     getConcepts,
     deleteConcept,
+    orderConcepts
 }

@@ -6,5 +6,6 @@ export const InitialState = {
       //this is what it should look like
     },
     deletedConcept: '',
+    newConcept: '',
 
 };
