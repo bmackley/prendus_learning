@@ -12,6 +12,7 @@
     <link href="../../bower_components/paper-dialog-behavior/paper-dialog-shared-styles.html" rel="import">
     <link href="../../bower_components/paper-item/paper-icon-item.html" rel="import">
     <link href="../../bower_components/paper-header-panel/paper-header-panel.html" rel="import">
+    <link href="../../bower_components/paper-spinner/paper-spinner.html" rel="import">
     <link href="../../bower_components/polymer-redux-store/redux-store.html" rel="import">
     <link href="../../bower_components/Sortable/Sortable.html" rel="import">
     <!-- <script src ="../../redux/initial-state.ts"></script>
@@ -46,6 +47,7 @@
         <sortable-js on-sort="sortableEnded">
             <template id="conceptsList" is="dom-repeat" items={{concepts}}>
               <div>
+                <!-- <paper-spinner></paper-spinner> Can't figure out how to get this-->
                 <paper-icon-item>
                   <div>
                     <h3 on-click="toggle" id= {{item.pos}} data-id$="{{item.pos}}">{{item.title}}</h3>
@@ -79,7 +81,8 @@
     <paper-dialog id = "addDialog" modal>
       <h2>Add a Concept</h2>
       <div>
-        <form is="iron-form" >
+        <!-- Look up Iron keys to change this -->
+        <form is="iron-form">
           <paper-input name="name" label="Concept Name" id ="conceptFormName" required auto-validate></paper-input>
           <paper-button dialog-dismiss>Cancel</paper-button>
           <paper-button on-tap="addConceptFormDone">Done</paper-button>

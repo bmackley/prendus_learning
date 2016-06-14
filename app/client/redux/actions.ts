@@ -47,16 +47,18 @@ const addConcept = {
     type: 'ADD_CONCEPT',
     execute: async (context, newConcept, conceptsArray) => {
         try {
+          console.log('Add Concept WOrking')
+          console.log('New Concept', newConcept)
           const conceptSuccess = await ConceptModel.save(null, newConcept);
-          //What exactly should set here?  What comes back from Firebase, or can we just send the newConcept Object that was passed in if we know it was successful?
+          console.log('Concepts Success', conceptSuccess)
           conceptsArray.conceptSuccess = newConcept;
+          console.log('Concepts Array', conceptsArray)
           context.action = {
               type: Actions.addConcept.type,
               key: conceptSuccess,
               pos: newConcept.pos,
               title: newConcept.title
           }
-
         }catch(error){
           return(error)
         }
@@ -66,7 +68,25 @@ const getConcepts = {
     type: 'GET_CONCEPTS',
     execute: async (context) => {
         try {
-          const concepts = await ConceptModel.getConcepts();
+          const modelConcepts = await ConceptModel.getConcepts();
+          console.log(modelConcepts)
+          const concepts = []
+          console.log('concepts before ', modelConcepts)
+          for(const key in modelConcepts){
+              concepts.push(modelConcepts[key])
+          }
+          for(let i, len = modelConcepts.length; i < len; i++){
+            modelConcepts[i]
+          }
+          console.log('concepts after', concepts)
+          function compare(a,b){
+            if(a.pos < b.pos)return -1;
+            if(a.pos > b.pos)return 1;
+            return 0;
+          }
+          concepts.sort(compare)
+          // console.log('concepts', concepts)
+
           context.action = {
               type: Actions.getConcepts.type,
               concepts: concepts,

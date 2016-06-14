@@ -3,6 +3,7 @@ import {Actions} from './actions.ts';
 
 export function rootReducer(state = InitialState, action) {
     state.newConcept = ''; //Does this set it to null every time?
+    state.deletedConcept = '';
     switch(action.type) {
         case Actions.setCurrentUser.type: {
             const newState = Object.assign({}, state);
@@ -19,7 +20,7 @@ export function rootReducer(state = InitialState, action) {
           const conceptDetail = action.key;
           newState.concepts[action.key] = action;
           newState.newConcept = newState.concepts[action.key];
-          newState.deletedConcept = '';//Needs to be included in every Action
+          console.log('newState', newState);
           return newState;
         }
         case Actions.setConcepts.type: {
@@ -47,7 +48,6 @@ export function rootReducer(state = InitialState, action) {
         }
         case Actions.getConcepts.type: {
             const newState = Object.assign({}, state);
-            // console.log('reducer concepts', action.concepts);
             newState.concepts = action.concepts;
             return newState;
         }

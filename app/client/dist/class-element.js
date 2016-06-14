@@ -60,11 +60,8 @@
 	            }
 	        }
 	        if (this.concepts.length === 0) {
-	            var firebaseConcepts = e.detail.state.concepts;
-	            for (var key in firebaseConcepts) {
-	                firebaseConcepts[key].key = key;
-	                this.push('concepts', firebaseConcepts[key]);
-	            }
+	            this.concepts = e.detail.state.concepts;
+	            console.log(this.concepts);
 	        }
 	        if (this.concepts.length === e.detail.state.newConcept.pos) {
 	            this.push('concepts', e.detail.state.newConcept);
@@ -85,30 +82,17 @@
 	        e.preventDefault();
 	        if (this.$.conceptFormName.value) {
 	            addDialog.close();
+	            console.log(this.concepts.length);
 	            var newConcept = {
 	                title: this.$.conceptFormName.value,
 	                pos: this.concepts.length
 	            };
+	            console.log('sending the action');
 	            _actions.Actions.addConcept.execute(this, newConcept, this.concepts);
 	        }
 	    },
 	    sortableEnded: function sortableEnded(e) {
-	        if (e.newIndex) {
-	            var length = this.concepts.length;
-	            var updateConceptPositionArray = [];
-	            for (var i = 0, len = this.concepts.length; i < len; i++) {
-	                if (e.newIndex < e.oldIndex) {
-	                    if (i >= e.newIndex) {
-	                        updateConceptPositionArray.push(this.concepts[i]);
-	                    }
-	                } else {
-	                    if (i >= e.newIndex) {
-	                        updateConceptPositionArray.push(this.concepts[i]);
-	                    }
-	                }
-	            }
-	            _actions.Actions.orderConcepts.execute(this, updateConceptPositionArray);
-	        }
+	        console.log('These are the concepts', this.concepts);
 	    },
 	    properties: {
 	        title: {
@@ -292,33 +276,38 @@
 	                    switch (_context4.prev = _context4.next) {
 	                        case 0:
 	                            _context4.prev = 0;
-	                            _context4.next = 3;
+
+	                            console.log('Add Concept WOrking');
+	                            console.log('New Concept', newConcept);
+	                            _context4.next = 5;
 	                            return _conceptModel.ConceptModel.save(null, newConcept);
 
-	                        case 3:
+	                        case 5:
 	                            conceptSuccess = _context4.sent;
 
+	                            console.log('Concepts Success', conceptSuccess);
 	                            conceptsArray.conceptSuccess = newConcept;
+	                            console.log('Concepts Array', conceptsArray);
 	                            context.action = {
 	                                type: Actions.addConcept.type,
 	                                key: conceptSuccess,
 	                                pos: newConcept.pos,
 	                                title: newConcept.title
 	                            };
-	                            _context4.next = 11;
+	                            _context4.next = 15;
 	                            break;
 
-	                        case 8:
-	                            _context4.prev = 8;
+	                        case 12:
+	                            _context4.prev = 12;
 	                            _context4.t0 = _context4['catch'](0);
 	                            return _context4.abrupt('return', _context4.t0);
 
-	                        case 11:
+	                        case 15:
 	                        case 'end':
 	                            return _context4.stop();
 	                    }
 	                }
-	            }, _callee4, this, [[0, 8]]);
+	            }, _callee4, this, [[0, 12]]);
 	        }));
 	    }
 	};
@@ -326,36 +315,56 @@
 	    type: 'GET_CONCEPTS',
 	    execute: function execute(context) {
 	        return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee5() {
-	            var concepts;
+	            var compare, modelConcepts, concepts, key, i, len;
 	            return regeneratorRuntime.wrap(function _callee5$(_context5) {
 	                while (1) {
 	                    switch (_context5.prev = _context5.next) {
 	                        case 0:
 	                            _context5.prev = 0;
-	                            _context5.next = 3;
+
+	                            compare = function compare(a, b) {
+	                                if (a.pos < b.pos) return -1;
+	                                if (a.pos > b.pos) return 1;
+	                                return 0;
+	                            };
+
+	                            _context5.next = 4;
 	                            return _conceptModel.ConceptModel.getConcepts();
 
-	                        case 3:
-	                            concepts = _context5.sent;
+	                        case 4:
+	                            modelConcepts = _context5.sent;
 
+	                            console.log(modelConcepts);
+	                            concepts = [];
+
+	                            console.log('concepts before ', modelConcepts);
+	                            for (key in modelConcepts) {
+	                                concepts.push(modelConcepts[key]);
+	                            }
+	                            for (len = modelConcepts.length; i < len; i++) {
+	                                modelConcepts[i];
+	                            }
+	                            console.log('concepts after', concepts);
+
+	                            concepts.sort(compare);
 	                            context.action = {
 	                                type: Actions.getConcepts.type,
 	                                concepts: concepts
 	                            };
-	                            _context5.next = 10;
+	                            _context5.next = 18;
 	                            break;
 
-	                        case 7:
-	                            _context5.prev = 7;
+	                        case 15:
+	                            _context5.prev = 15;
 	                            _context5.t0 = _context5['catch'](0);
 	                            return _context5.abrupt('return', _context5.t0);
 
-	                        case 10:
+	                        case 18:
 	                        case 'end':
 	                            return _context5.stop();
 	                    }
 	                }
-	            }, _callee5, this, [[0, 7]]);
+	            }, _callee5, this, [[0, 15]]);
 	        }));
 	    }
 	};
@@ -492,6 +501,11 @@
 	};
 	var set = function set(path, data) {
 	    var newConcept = rootRef.child(path).set(data);
+	    return newConcept;
+	};
+	var update = function update(path, data) {
+	    console.log('inside the firebase updat');
+	    var newConcept = rootRef.child(path).update(data);
 	    return newConcept;
 	};
 	var push = function push(path, data) {
@@ -639,6 +653,7 @@
 	var FirebaseService = exports.FirebaseService = {
 	    setConcept: setConcept,
 	    set: set,
+	    update: update,
 	    push: push,
 	    get: get,
 	    deleteItem: deleteItem,
@@ -1334,7 +1349,7 @@
 	};
 	var getConcepts = function getConcepts() {
 	    return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee3() {
-	        var path, concepts;
+	        var path, databaseConcepts, firebaseConcepts, key;
 	        return regeneratorRuntime.wrap(function _callee3$(_context3) {
 	            while (1) {
 	                switch (_context3.prev = _context3.next) {
@@ -1344,10 +1359,16 @@
 	                        return _firebaseService.FirebaseService.get(path);
 
 	                    case 3:
-	                        concepts = _context3.sent;
-	                        return _context3.abrupt('return', concepts.val());
+	                        databaseConcepts = _context3.sent;
+	                        firebaseConcepts = databaseConcepts.val();
 
-	                    case 5:
+	                        for (key in firebaseConcepts) {
+	                            console.log(key);
+	                            firebaseConcepts[key].key = key;
+	                        }
+	                        return _context3.abrupt('return', firebaseConcepts);
+
+	                    case 7:
 	                    case 'end':
 	                        return _context3.stop();
 	                }
@@ -1394,11 +1415,11 @@
 
 	                        item = _context5.t1.value;
 	                        path = conceptPath + '/' + conceptsArray[item].key;
-	                        data = { pos: conceptsArray[item].pos };
+	                        data = conceptsArray[item];
 
-	                        console.log(path);
+	                        console.log('inside the model update');
 	                        _context5.next = 8;
-	                        return _firebaseService.FirebaseService.set(path, data);
+	                        return _firebaseService.FirebaseService.update(path, data);
 
 	                    case 8:
 	                        _context5.next = 1;

@@ -389,6 +389,11 @@
 	    var newConcept = rootRef.child(path).set(data);
 	    return newConcept;
 	};
+	var update = function update(path, data) {
+	    console.log('inside the firebase updat');
+	    var newConcept = rootRef.child(path).update(data);
+	    return newConcept;
+	};
 	var push = function push(path, data) {
 	    var newConcept = rootRef.child(path).push(data);
 	    return newConcept;
@@ -534,6 +539,7 @@
 	var FirebaseService = exports.FirebaseService = {
 	    setConcept: setConcept,
 	    set: set,
+	    update: update,
 	    push: push,
 	    get: get,
 	    deleteItem: deleteItem,

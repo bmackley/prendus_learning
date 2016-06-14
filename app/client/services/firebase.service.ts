@@ -19,14 +19,18 @@ const set = (path, data) => {
     const newConcept = rootRef.child(path).set(data)
     return newConcept;
 };
-
+const update = (path, data) => {
+    console.log('inside the firebase updat')
+    const newConcept = rootRef.child(path).update(data)
+    return newConcept;
+};
 const push = (path, data) => {
     const newConcept = rootRef.child(path).push(data)
     return newConcept;
 };
 
 const get = async (path) => {
-    const concepts = await rootRef.child(path).once('value')
+    const concepts = await rootRef.child(path).once('value');
     return concepts;
 };
 const deleteItem = async (path, key) => {
@@ -82,6 +86,7 @@ const logOutUser = () => {
 export const FirebaseService = {
     setConcept,
     set,
+    update,
     push,
     get,
     deleteItem,

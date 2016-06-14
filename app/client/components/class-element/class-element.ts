@@ -16,11 +16,8 @@ Polymer({
         }
       }
       if(this.concepts.length === 0){
-        let firebaseConcepts = e.detail.state.concepts;
-        for (let key in firebaseConcepts){
-          firebaseConcepts[key].key = key;
-          this.push('concepts', firebaseConcepts[key])
-        }
+        this.concepts = e.detail.state.concepts;
+        console.log(this.concepts);
       }
       if(this.concepts.length === e.detail.state.newConcept.pos){
         this.push('concepts', e.detail.state.newConcept)
@@ -43,31 +40,60 @@ Polymer({
     if(this.$.conceptFormName.value){
       //close the dialog form if there has already been an input
       addDialog.close();
+      console.log(this.concepts.length)
       let newConcept = {
         title: this.$.conceptFormName.value,
         pos: this.concepts.length,
       }
+      console.log('sending the action')
       Actions.addConcept.execute(this, newConcept, this.concepts);
     }
   },
   sortableEnded: function(e){
-    if(e.newIndex){
-      let length = this.concepts.length;
-      let updateConceptPositionArray = [];
-      for(let i = 0, len = this.concepts.length; i < len; i++ ){
-        if(e.newIndex < e.oldIndex){
-          if(i >= e.newIndex){
-            updateConceptPositionArray.push(this.concepts[i])
-          }
-        }else{
-          if(i >= e.newIndex){
-            updateConceptPositionArray.push(this.concepts[i])
-          }
-        }
-
-      }
-      Actions.orderConcepts.execute(this, updateConceptPositionArray);
-    }
+    console.log('These are the concepts', this.concepts);
+    // if(typeof e.newIndex !== 'undefined'){
+    //   console.log('e', e)
+    //   console.log('new Index', e.newIndex)
+    //   console.log('old Index', e.oldIndex)
+    //   let length = this.concepts.length;
+    //   let updateConceptPositionArray = [];
+    //   for(let i = 0, len = this.concepts.length; i < len; i++ ){
+    //     console.log('i', i)
+    //     if(e.newIndex < e.oldIndex){
+    //       console.log('new Index less than old index')
+    //       if(this.concepts[i].pos == e.oldIndex){
+    //         this.concepts[i].pos = e.newIndex;
+    //         console.log(this.concepts[i])
+    //         updateConceptPositionArray.push(this.concepts[i])
+    //         console.log('update concepts array 1', updateConceptPositionArray)
+    //       }else{
+    //         if(this.concepts[i].pos >= e.newIndex){
+    //           console.log('concept position', this.concepts[i].pos)
+    //           console.log('concept position plus plu', this.concepts[i].pos++)
+    //           this.concepts[i].pos = this.concepts[i].pos++;
+    //           console.log('concept position updated', this.concepts[i].pos)
+    //           updateConceptPositionArray.push(this.concepts[i])
+    //           console.log('update concepts array 2', updateConceptPositionArray)
+    //         }
+    //       }
+    //     }else{
+    //       console.log('New Index more than Old index');
+    //       if(this.concepts[i].pos == e.oldIndex){
+    //         this.concepts[i].pos = e.newIndex;
+    //         updateConceptPositionArray.push(this.concepts[i])
+    //         console.log('update concepts array 3', updateConceptPositionArray)
+    //       }else{
+    //         if(this.concepts[i].pos >= e.oldIndex && this.concepts[i].pos <= e.newIndex){
+    //           this.concepts[i].pos = this.concepts[i].pos --;
+    //           updateConceptPositionArray.push(this.concepts[i])
+    //           console.log('update concepts array 4', updateConceptPositionArray)
+    //         }
+    //       }
+    //     }
+    //   }
+    //   console.log(updateConceptPositionArray)
+    //   Actions.orderConcepts.execute(this, updateConceptPositionArray);
+    // }
   },
   properties: {
       title: {
