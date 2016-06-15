@@ -21,7 +21,9 @@ const checkUserAuth = {
     type: 'CHECK_USER_AUTH',
     execute: async (context) => {
         try {
+          console.log('Check User Auth Actions')
           const success = await FirebaseService.currentUser();
+          console.log(success)
           context.action = {
             type: Actions.checkUserAuth.type,
             email: success
@@ -47,12 +49,8 @@ const addConcept = {
     type: 'ADD_CONCEPT',
     execute: async (context, newConcept, conceptsArray) => {
         try {
-          console.log('Add Concept WOrking')
-          console.log('New Concept', newConcept)
           const conceptSuccess = await ConceptModel.save(null, newConcept);
-          console.log('Concepts Success', conceptSuccess)
           conceptsArray.conceptSuccess = newConcept;
-          console.log('Concepts Array', conceptsArray)
           context.action = {
               type: Actions.addConcept.type,
               key: conceptSuccess,
@@ -69,24 +67,19 @@ const getConcepts = {
     execute: async (context) => {
         try {
           const modelConcepts = await ConceptModel.getConcepts();
-          console.log(modelConcepts)
           const concepts = []
-          console.log('concepts before ', modelConcepts)
           for(const key in modelConcepts){
               concepts.push(modelConcepts[key])
           }
           for(let i, len = modelConcepts.length; i < len; i++){
             modelConcepts[i]
           }
-          console.log('concepts after', concepts)
           function compare(a,b){
             if(a.pos < b.pos)return -1;
             if(a.pos > b.pos)return 1;
             return 0;
           }
           concepts.sort(compare)
-          // console.log('concepts', concepts)
-
           context.action = {
               type: Actions.getConcepts.type,
               concepts: concepts,

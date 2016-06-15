@@ -8,11 +8,56 @@
 <dom-module id="index-element">
   <style>
     /* CSS rules for your element */
+    #welcome {
+      height: 800px;
+      background: url("onlinelearning.jpg");
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+      margin: 0px;
+    }
+    h1 {
+      margin: 0px;
+    }
+    #students {
+      height: 800px;
+      background-color: var(--primary-background-color);
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+      margin: 0px;
+    }
+    #teachers {
+      height: 800px;
+      background-color: var(--light-primary-color);
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+      margin: 0px;
+    }
+    .block {
+      @apply(--layout-block);
+    }
   </style>
   <template>
-    <p>Hello world</p>
-    <iron-image style="width:100%; height:800px; background-color: lightgray;"
-    sizing="cover" preload src="onlinelearning.jpg"></iron-image>
+    <paper-material elevation="1" id = "welcome" class = "block">
+      <!-- <iron-image style="width:100%; height:800px; background-color: lightgray;"
+      sizing="cover" preload src="onlinelearning.jpg" ></iron-image> -->
+      <center><h1>Welcome to Prendus</h1></center>
+    </paper-material>
+    <paper-material elevation="5" id = "students" class = "block">
+      <!-- <iron-image style="width:100%; height:800px; background-color: lightgray;"
+      sizing="cover" preload src="onlinelearning.jpg" ></iron-image> -->
+      <center><h1>Student Applications</h1></center>
+    </paper-material>
+    <paper-material elevation="1" id = "teachers" class = "block">
+      <!-- <iron-image style="width:100%; height:800px; background-color: lightgray;"
+      sizing="cover" preload src="onlinelearning.jpg" ></iron-image> -->
+      <center><h1>Teacher Applications</h1></center>
+    </paper-material>
   </template>
 </dom-module>
 <script>

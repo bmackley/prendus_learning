@@ -76,7 +76,7 @@
 	});
 	exports.Actions = undefined;
 
-	var _firebaseService = __webpack_require__(4);
+	var _firebaseService = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../services/firebase.service.ts\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
 	var _conceptModel = __webpack_require__(7);
 
@@ -152,30 +152,33 @@
 	                    switch (_context2.prev = _context2.next) {
 	                        case 0:
 	                            _context2.prev = 0;
-	                            _context2.next = 3;
+
+	                            console.log('Check User Auth Actions');
+	                            _context2.next = 4;
 	                            return _firebaseService.FirebaseService.currentUser();
 
-	                        case 3:
+	                        case 4:
 	                            success = _context2.sent;
 
+	                            console.log(success);
 	                            context.action = {
 	                                type: Actions.checkUserAuth.type,
 	                                email: success
 	                            };
-	                            _context2.next = 10;
+	                            _context2.next = 12;
 	                            break;
 
-	                        case 7:
-	                            _context2.prev = 7;
+	                        case 9:
+	                            _context2.prev = 9;
 	                            _context2.t0 = _context2['catch'](0);
 	                            return _context2.abrupt('return', _context2.t0);
 
-	                        case 10:
+	                        case 12:
 	                        case 'end':
 	                            return _context2.stop();
 	                    }
 	                }
-	            }, _callee2, this, [[0, 7]]);
+	            }, _callee2, this, [[0, 9]]);
 	        }));
 	    }
 	};
@@ -223,38 +226,33 @@
 	                    switch (_context4.prev = _context4.next) {
 	                        case 0:
 	                            _context4.prev = 0;
-
-	                            console.log('Add Concept WOrking');
-	                            console.log('New Concept', newConcept);
-	                            _context4.next = 5;
+	                            _context4.next = 3;
 	                            return _conceptModel.ConceptModel.save(null, newConcept);
 
-	                        case 5:
+	                        case 3:
 	                            conceptSuccess = _context4.sent;
 
-	                            console.log('Concepts Success', conceptSuccess);
 	                            conceptsArray.conceptSuccess = newConcept;
-	                            console.log('Concepts Array', conceptsArray);
 	                            context.action = {
 	                                type: Actions.addConcept.type,
 	                                key: conceptSuccess,
 	                                pos: newConcept.pos,
 	                                title: newConcept.title
 	                            };
-	                            _context4.next = 15;
+	                            _context4.next = 11;
 	                            break;
 
-	                        case 12:
-	                            _context4.prev = 12;
+	                        case 8:
+	                            _context4.prev = 8;
 	                            _context4.t0 = _context4['catch'](0);
 	                            return _context4.abrupt('return', _context4.t0);
 
-	                        case 15:
+	                        case 11:
 	                        case 'end':
 	                            return _context4.stop();
 	                    }
 	                }
-	            }, _callee4, this, [[0, 12]]);
+	            }, _callee4, this, [[0, 8]]);
 	        }));
 	    }
 	};
@@ -280,38 +278,34 @@
 
 	                        case 4:
 	                            modelConcepts = _context5.sent;
-
-	                            console.log(modelConcepts);
 	                            concepts = [];
 
-	                            console.log('concepts before ', modelConcepts);
 	                            for (key in modelConcepts) {
 	                                concepts.push(modelConcepts[key]);
 	                            }
 	                            for (len = modelConcepts.length; i < len; i++) {
 	                                modelConcepts[i];
 	                            }
-	                            console.log('concepts after', concepts);
 
 	                            concepts.sort(compare);
 	                            context.action = {
 	                                type: Actions.getConcepts.type,
 	                                concepts: concepts
 	                            };
-	                            _context5.next = 18;
+	                            _context5.next = 15;
 	                            break;
 
-	                        case 15:
-	                            _context5.prev = 15;
+	                        case 12:
+	                            _context5.prev = 12;
 	                            _context5.t0 = _context5['catch'](0);
 	                            return _context5.abrupt('return', _context5.t0);
 
-	                        case 18:
+	                        case 15:
 	                        case 'end':
 	                            return _context5.stop();
 	                    }
 	                }
-	            }, _callee5, this, [[0, 15]]);
+	            }, _callee5, this, [[0, 12]]);
 	        }));
 	    }
 	};
@@ -380,237 +374,7 @@
 	};
 
 /***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	var __awaiter = undefined && undefined.__awaiter || function (thisArg, _arguments, P, generator) {
-	    return new (P || (P = Promise))(function (resolve, reject) {
-	        function fulfilled(value) {
-	            try {
-	                step(generator.next(value));
-	            } catch (e) {
-	                reject(e);
-	            }
-	        }
-	        function rejected(value) {
-	            try {
-	                step(generator.throw(value));
-	            } catch (e) {
-	                reject(e);
-	            }
-	        }
-	        function step(result) {
-	            result.done ? resolve(result.value) : new P(function (resolve) {
-	                resolve(result.value);
-	            }).then(fulfilled, rejected);
-	        }
-	        step((generator = generator.apply(thisArg, _arguments)).next());
-	    });
-	};
-	var Firebase = __webpack_require__(5);
-	var config = {
-	    apiKey: "AIzaSyANTSoOA6LZZDxM7vqIlAl37B7IqWL-6MY",
-	    authDomain: "prendus.firebaseapp.com",
-	    databaseURL: "https://prendus.firebaseio.com",
-	    storageBucket: "prendus.appspot.com"
-	};
-	Firebase.initializeApp(config);
-	var rootRef = Firebase.database().ref();
-	var setConcept = function setConcept(creator, title) {
-	    return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee() {
-	        var newConcept;
-	        return regeneratorRuntime.wrap(function _callee$(_context) {
-	            while (1) {
-	                switch (_context.prev = _context.next) {
-	                    case 0:
-	                        _context.next = 2;
-	                        return rootRef.set({
-	                            title: title,
-	                            creator: creator
-	                        });
-
-	                    case 2:
-	                        newConcept = _context.sent;
-	                        return _context.abrupt("return", newConcept);
-
-	                    case 4:
-	                    case "end":
-	                        return _context.stop();
-	                }
-	            }
-	        }, _callee, this);
-	    }));
-	};
-	var set = function set(path, data) {
-	    var newConcept = rootRef.child(path).set(data);
-	    return newConcept;
-	};
-	var update = function update(path, data) {
-	    console.log('inside the firebase updat');
-	    var newConcept = rootRef.child(path).update(data);
-	    return newConcept;
-	};
-	var push = function push(path, data) {
-	    var newConcept = rootRef.child(path).push(data);
-	    return newConcept;
-	};
-	var get = function get(path) {
-	    return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee2() {
-	        var concepts;
-	        return regeneratorRuntime.wrap(function _callee2$(_context2) {
-	            while (1) {
-	                switch (_context2.prev = _context2.next) {
-	                    case 0:
-	                        _context2.next = 2;
-	                        return rootRef.child(path).once('value');
-
-	                    case 2:
-	                        concepts = _context2.sent;
-	                        return _context2.abrupt("return", concepts);
-
-	                    case 4:
-	                    case "end":
-	                        return _context2.stop();
-	                }
-	            }
-	        }, _callee2, this);
-	    }));
-	};
-	var deleteItem = function deleteItem(path, key) {
-	    return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee3() {
-	        var newPath;
-	        return regeneratorRuntime.wrap(function _callee3$(_context3) {
-	            while (1) {
-	                switch (_context3.prev = _context3.next) {
-	                    case 0:
-	                        _context3.prev = 0;
-	                        newPath = path + "/" + key;
-
-	                        console.log('New Path');
-	                        console.log(newPath);
-	                        rootRef.child(newPath).remove();
-	                        _context3.next = 10;
-	                        break;
-
-	                    case 7:
-	                        _context3.prev = 7;
-	                        _context3.t0 = _context3["catch"](0);
-	                        return _context3.abrupt("return", _context3.t0);
-
-	                    case 10:
-	                    case "end":
-	                        return _context3.stop();
-	                }
-	            }
-	        }, _callee3, this, [[0, 7]]);
-	    }));
-	};
-	var createUser = function createUser(email, password) {
-	    return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee4() {
-	        var ref, userData;
-	        return regeneratorRuntime.wrap(function _callee4$(_context4) {
-	            while (1) {
-	                switch (_context4.prev = _context4.next) {
-	                    case 0:
-	                        ref = new Firebase("\"https://prendus.firebaseio.com/\"");
-	                        _context4.next = 3;
-	                        return ref.createUser({
-	                            email: email,
-	                            password: password
-	                        });
-
-	                    case 3:
-	                        userData = _context4.sent;
-	                        return _context4.abrupt("return", userData);
-
-	                    case 5:
-	                    case "end":
-	                        return _context4.stop();
-	                }
-	            }
-	        }, _callee4, this);
-	    }));
-	};
-	var logInUser = function logInUser(email, password) {
-	    return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee5() {
-	        var auth;
-	        return regeneratorRuntime.wrap(function _callee5$(_context5) {
-	            while (1) {
-	                switch (_context5.prev = _context5.next) {
-	                    case 0:
-	                        _context5.next = 2;
-	                        return Firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
-	                            var errorCode = error.code;
-	                            var errorMessage = error.message;
-	                        });
-
-	                    case 2:
-	                        auth = _context5.sent;
-	                        return _context5.abrupt("return", auth);
-
-	                    case 4:
-	                    case "end":
-	                        return _context5.stop();
-	                }
-	            }
-	        }, _callee5, this);
-	    }));
-	};
-	var currentUser = function currentUser() {
-	    return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee6() {
-	        var userData;
-	        return regeneratorRuntime.wrap(function _callee6$(_context6) {
-	            while (1) {
-	                switch (_context6.prev = _context6.next) {
-	                    case 0:
-	                        _context6.next = 2;
-	                        return Firebase.auth().onAuthStateChanged(function (user) {
-	                            if (user) {
-	                                console.log(user.email);
-	                                return user;
-	                            } else {
-	                                return '';
-	                            }
-	                        });
-
-	                    case 2:
-	                        userData = _context6.sent;
-
-	                        console.log('outside user info');
-	                        console.log(userData);
-	                        return _context6.abrupt("return", userData);
-
-	                    case 6:
-	                    case "end":
-	                        return _context6.stop();
-	                }
-	            }
-	        }, _callee6, this);
-	    }));
-	};
-	var logOutUser = function logOutUser() {
-	    var ref = new Firebase("\"https://prendus.firebaseio.com/\"");
-	    ref.unauth();
-	};
-	var FirebaseService = exports.FirebaseService = {
-	    setConcept: setConcept,
-	    set: set,
-	    update: update,
-	    push: push,
-	    get: get,
-	    deleteItem: deleteItem,
-	    createUser: createUser,
-	    logInUser: logInUser,
-	    currentUser: currentUser,
-	    logOutUser: logOutUser
-	};
-
-/***/ },
+/* 4 */,
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1205,7 +969,7 @@
 	});
 	exports.ConceptModel = undefined;
 
-	var _firebaseService = __webpack_require__(4);
+	var _firebaseService = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../services/firebase.service.ts\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
 	var __awaiter = undefined && undefined.__awaiter || function (thisArg, _arguments, P, generator) {
 	    return new (P || (P = Promise))(function (resolve, reject) {
@@ -1310,7 +1074,6 @@
 	                        firebaseConcepts = databaseConcepts.val();
 
 	                        for (key in firebaseConcepts) {
-	                            console.log(key);
 	                            firebaseConcepts[key].key = key;
 	                        }
 	                        return _context3.abrupt('return', firebaseConcepts);
@@ -1356,23 +1119,21 @@
 
 	                    case 1:
 	                        if ((_context5.t1 = _context5.t0()).done) {
-	                            _context5.next = 10;
+	                            _context5.next = 9;
 	                            break;
 	                        }
 
 	                        item = _context5.t1.value;
 	                        path = conceptPath + '/' + conceptsArray[item].key;
 	                        data = conceptsArray[item];
-
-	                        console.log('inside the model update');
-	                        _context5.next = 8;
+	                        _context5.next = 7;
 	                        return _firebaseService.FirebaseService.update(path, data);
 
-	                    case 8:
+	                    case 7:
 	                        _context5.next = 1;
 	                        break;
 
-	                    case 10:
+	                    case 9:
 	                    case 'end':
 	                        return _context5.stop();
 	                }

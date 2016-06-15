@@ -7,7 +7,6 @@ Polymer({
     },
   ready: function(e){
     this.rootReducer = rootReducer;
-    //this isn't working
-    // Actions.checkUserAuth.execute(this);
+    Actions.checkUserAuth.execute(this);
   }
 });

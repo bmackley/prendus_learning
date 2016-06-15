@@ -49,7 +49,7 @@
 	var _actions = __webpack_require__(3);
 
 	Polymer({
-	    is: "class-element",
+	    is: "course-element",
 	    listeners: {},
 	    mapStateToThis: function mapStateToThis(e) {
 	        if (e.detail.state.deletedConcept) {
@@ -61,7 +61,6 @@
 	        }
 	        if (this.concepts.length === 0) {
 	            this.concepts = e.detail.state.concepts;
-	            console.log(this.concepts);
 	        }
 	        if (this.concepts.length === e.detail.state.newConcept.pos) {
 	            this.push('concepts', e.detail.state.newConcept);
@@ -82,17 +81,24 @@
 	        e.preventDefault();
 	        if (this.$.conceptFormName.value) {
 	            addDialog.close();
-	            console.log(this.concepts.length);
 	            var newConcept = {
 	                title: this.$.conceptFormName.value,
 	                pos: this.concepts.length
 	            };
-	            console.log('sending the action');
 	            _actions.Actions.addConcept.execute(this, newConcept, this.concepts);
 	        }
 	    },
 	    sortableEnded: function sortableEnded(e) {
-	        console.log('These are the concepts', this.concepts);
+	        if (typeof e.newIndex !== 'undefined') {
+	            var updateConceptPositionArray = [];
+	            for (var i = 0, len = this.concepts.length; i < len; i++) {
+	                if (this.concepts[i].pos != i) {
+	                    this.concepts[i].pos = i;
+	                    updateConceptPositionArray.push(this.concepts[i]);
+	                }
+	            }
+	            _actions.Actions.orderConcepts.execute(this, updateConceptPositionArray);
+	        }
 	    },
 	    properties: {
 	        title: {
@@ -205,30 +211,33 @@
 	                    switch (_context2.prev = _context2.next) {
 	                        case 0:
 	                            _context2.prev = 0;
-	                            _context2.next = 3;
+
+	                            console.log('Check User Auth Actions');
+	                            _context2.next = 4;
 	                            return _firebaseService.FirebaseService.currentUser();
 
-	                        case 3:
+	                        case 4:
 	                            success = _context2.sent;
 
+	                            console.log(success);
 	                            context.action = {
 	                                type: Actions.checkUserAuth.type,
 	                                email: success
 	                            };
-	                            _context2.next = 10;
+	                            _context2.next = 12;
 	                            break;
 
-	                        case 7:
-	                            _context2.prev = 7;
+	                        case 9:
+	                            _context2.prev = 9;
 	                            _context2.t0 = _context2['catch'](0);
 	                            return _context2.abrupt('return', _context2.t0);
 
-	                        case 10:
+	                        case 12:
 	                        case 'end':
 	                            return _context2.stop();
 	                    }
 	                }
-	            }, _callee2, this, [[0, 7]]);
+	            }, _callee2, this, [[0, 9]]);
 	        }));
 	    }
 	};
@@ -276,38 +285,33 @@
 	                    switch (_context4.prev = _context4.next) {
 	                        case 0:
 	                            _context4.prev = 0;
-
-	                            console.log('Add Concept WOrking');
-	                            console.log('New Concept', newConcept);
-	                            _context4.next = 5;
+	                            _context4.next = 3;
 	                            return _conceptModel.ConceptModel.save(null, newConcept);
 
-	                        case 5:
+	                        case 3:
 	                            conceptSuccess = _context4.sent;
 
-	                            console.log('Concepts Success', conceptSuccess);
 	                            conceptsArray.conceptSuccess = newConcept;
-	                            console.log('Concepts Array', conceptsArray);
 	                            context.action = {
 	                                type: Actions.addConcept.type,
 	                                key: conceptSuccess,
 	                                pos: newConcept.pos,
 	                                title: newConcept.title
 	                            };
-	                            _context4.next = 15;
+	                            _context4.next = 11;
 	                            break;
 
-	                        case 12:
-	                            _context4.prev = 12;
+	                        case 8:
+	                            _context4.prev = 8;
 	                            _context4.t0 = _context4['catch'](0);
 	                            return _context4.abrupt('return', _context4.t0);
 
-	                        case 15:
+	                        case 11:
 	                        case 'end':
 	                            return _context4.stop();
 	                    }
 	                }
-	            }, _callee4, this, [[0, 12]]);
+	            }, _callee4, this, [[0, 8]]);
 	        }));
 	    }
 	};
@@ -333,38 +337,34 @@
 
 	                        case 4:
 	                            modelConcepts = _context5.sent;
-
-	                            console.log(modelConcepts);
 	                            concepts = [];
 
-	                            console.log('concepts before ', modelConcepts);
 	                            for (key in modelConcepts) {
 	                                concepts.push(modelConcepts[key]);
 	                            }
 	                            for (len = modelConcepts.length; i < len; i++) {
 	                                modelConcepts[i];
 	                            }
-	                            console.log('concepts after', concepts);
 
 	                            concepts.sort(compare);
 	                            context.action = {
 	                                type: Actions.getConcepts.type,
 	                                concepts: concepts
 	                            };
-	                            _context5.next = 18;
+	                            _context5.next = 15;
 	                            break;
 
-	                        case 15:
-	                            _context5.prev = 15;
+	                        case 12:
+	                            _context5.prev = 12;
 	                            _context5.t0 = _context5['catch'](0);
 	                            return _context5.abrupt('return', _context5.t0);
 
-	                        case 18:
+	                        case 15:
 	                        case 'end':
 	                            return _context5.stop();
 	                    }
 	                }
-	            }, _callee5, this, [[0, 15]]);
+	            }, _callee5, this, [[0, 12]]);
 	        }));
 	    }
 	};
@@ -504,7 +504,6 @@
 	    return newConcept;
 	};
 	var update = function update(path, data) {
-	    console.log('inside the firebase updat');
 	    var newConcept = rootRef.child(path).update(data);
 	    return newConcept;
 	};
@@ -544,23 +543,21 @@
 	                        _context3.prev = 0;
 	                        newPath = path + "/" + key;
 
-	                        console.log('New Path');
-	                        console.log(newPath);
 	                        rootRef.child(newPath).remove();
-	                        _context3.next = 10;
+	                        _context3.next = 8;
 	                        break;
 
-	                    case 7:
-	                        _context3.prev = 7;
+	                    case 5:
+	                        _context3.prev = 5;
 	                        _context3.t0 = _context3["catch"](0);
 	                        return _context3.abrupt("return", _context3.t0);
 
-	                    case 10:
+	                    case 8:
 	                    case "end":
 	                        return _context3.stop();
 	                }
 	            }
-	        }, _callee3, this, [[0, 7]]);
+	        }, _callee3, this, [[0, 5]]);
 	    }));
 	};
 	var createUser = function createUser(email, password) {
@@ -616,29 +613,30 @@
 	};
 	var currentUser = function currentUser() {
 	    return __awaiter(undefined, void 0, void 0, regeneratorRuntime.mark(function _callee6() {
-	        var userData;
+	        var user, userData;
 	        return regeneratorRuntime.wrap(function _callee6$(_context6) {
 	            while (1) {
 	                switch (_context6.prev = _context6.next) {
 	                    case 0:
-	                        _context6.next = 2;
-	                        return Firebase.auth().onAuthStateChanged(function (user) {
-	                            if (user) {
-	                                console.log(user.email);
-	                                return user;
-	                            } else {
-	                                return '';
-	                            }
-	                        });
+	                        console.log('firebase user');
+	                        _context6.next = 3;
+	                        return Firebase.auth().currentUser;
 
-	                    case 2:
+	                    case 3:
+	                        user = _context6.sent;
+
+	                        console.log(user);
+	                        _context6.next = 7;
+	                        return Firebase.auth();
+
+	                    case 7:
 	                        userData = _context6.sent;
 
-	                        console.log('outside user info');
-	                        console.log(userData);
+	                        console.log(userData.currentUser.email);
+	                        console.log(userData.currentUser.email);
 	                        return _context6.abrupt("return", userData);
 
-	                    case 6:
+	                    case 11:
 	                    case "end":
 	                        return _context6.stop();
 	                }
@@ -1363,7 +1361,6 @@
 	                        firebaseConcepts = databaseConcepts.val();
 
 	                        for (key in firebaseConcepts) {
-	                            console.log(key);
 	                            firebaseConcepts[key].key = key;
 	                        }
 	                        return _context3.abrupt('return', firebaseConcepts);
@@ -1409,23 +1406,21 @@
 
 	                    case 1:
 	                        if ((_context5.t1 = _context5.t0()).done) {
-	                            _context5.next = 10;
+	                            _context5.next = 9;
 	                            break;
 	                        }
 
 	                        item = _context5.t1.value;
 	                        path = conceptPath + '/' + conceptsArray[item].key;
 	                        data = conceptsArray[item];
-
-	                        console.log('inside the model update');
-	                        _context5.next = 8;
+	                        _context5.next = 7;
 	                        return _firebaseService.FirebaseService.update(path, data);
 
-	                    case 8:
+	                    case 7:
 	                        _context5.next = 1;
 	                        break;
 
-	                    case 10:
+	                    case 9:
 	                    case 'end':
 	                        return _context5.stop();
 	                }

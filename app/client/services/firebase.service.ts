@@ -20,7 +20,6 @@ const set = (path, data) => {
     return newConcept;
 };
 const update = (path, data) => {
-    console.log('inside the firebase updat')
     const newConcept = rootRef.child(path).update(data)
     return newConcept;
 };
@@ -36,8 +35,6 @@ const get = async (path) => {
 const deleteItem = async (path, key) => {
     try{
       let newPath = path + "/" + key;
-      console.log('New Path')
-      console.log(newPath)
       rootRef.child(newPath).remove();
       //There use to be an onComplete parameter that was passed into remove, but can't find it in the new Firebase Docs
     }catch(error){return error;}
@@ -60,19 +57,24 @@ const logInUser = async (email, password) => {
     });
     return auth;
 };
-const currentUser = async () => {
-  const userData = await Firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-      // User is signed in.
-      console.log(user.email);
-      return user;
-    } else {
-      // No user is signed in.
-      return '';
-    }
-  });
-  console.log('outside user info')
-  console.log(userData)
+const currentUser = => {
+  console.log('firebase user')
+  var user = window.firebase.User.currentUser;
+  console.log(user)
+  const userData = await Firebase.auth();
+  // const userData = await Firebase.auth().onAuthStateChanged(function (user) {
+  //   if (user) {
+  //     // User is signed in.
+  //     console.log(user.email)
+  //     this.username = user;
+  //     return;
+  //   } else {
+  //     // No user is signed in.
+  //     return '';
+  //   }
+  // });
+  console.log(userData.currentUser.email)
+  console.log(userData.currentUser.email)
   return(userData)
 };
 

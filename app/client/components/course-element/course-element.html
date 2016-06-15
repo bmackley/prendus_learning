@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="../../bower_components/polymer/polymer.html" rel="import">
+    <link href="../../bower_components/polymer/polymer.html" rel="import">
+    <link href="../../bower_components/iron-icons/editor-icons.html" rel="import">
+    <link href="../../bower_components/iron-collapse/iron-collapse.html" rel="import">
+    <link href="../../bower_components/iron-flex-layout/iron-flex-layout.html" rel="import">
+    <link href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html" rel="import">
+    <link href="../../bower_components/paper-dialog/paper-dialog.html" rel="import">
+    <link href="../../bower_components/paper-dialog-behavior/paper-dialog-behavior.html" rel="import">
+    <link href="../../bower_components/paper-dialog-behavior/paper-dialog-shared-styles.html" rel="import">
+    <link href="../../bower_components/paper-item/paper-icon-item.html" rel="import">
+    <link href="../../bower_components/paper-header-panel/paper-header-panel.html" rel="import">
+    <link href="../../bower_components/paper-spinner/paper-spinner.html" rel="import">
+    <link href="../../bower_components/paper-date-picker/paper-date-picker.html" rel="import">
+    <link href="../../bower_components/polymer-redux-store/redux-store.html" rel="import">
+    <link href="../../bower_components/Sortable/Sortable.html" rel="import">
+    <script src="../../bower_components/moment/min/moment-with-locales.min.js"></script>
+    <!-- <script src ="../../redux/initial-state.ts"></script>
+    <script src ="../../models/concept.ts"></script> -->
+    <!-- Element Imports -->
+</head>
+
+<dom-module id="course-element">
+  <style>
+    :host {
+      display: block;
+    }
+    #classContent {
+      @apply(--layout-horizontal);
+    }
+    .flex-horizontal {
+      @apply(--layout-flex);
+    }
+    /* CSS rules for your element */
+  </style>
+  <template>
+    <redux-store action="[[action]]"></redux-store>
+    <redux-store on-statechange="mapStateToThis"></redux-store>
+    <template id="title" is="dom-repeat" items="{{courses}}">
+      <course-title title="{{item.title}}" instructor="{{item.instructor}}">
+        <h1 id ="courseTitle" contenteditable="true">
+          {{item.title}}
+        </h1>
+        <h1 contenteditable="true">
+          {{item.instructor}}
+        </h1>
+        <paper-dialog id="selectDate" class="paper-date-picker-dialog" modal
+          on-iron-overlay-closed="dismissDatepicker">
+          <paper-date-picker id="picker" date="{{date}}" min-date="September 1, 2016"></paper-date-picker>
+          <div class="buttons">
+            <paper-button dialog-dismiss>Cancel</paper-button>
+            <paper-button dialog-confirm>OK</paper-button>
+          </div>
+        </paper-dialog>
+        <iron-icon icon="icons:delete" item-icon on-click="DatePicker"></iron-icon>
+        <h1 contenteditable="true">
+          {{item.startDate}}
+        </h1>
+        <h1 contenteditable="true">
+          {{item.endDate}}
+        </h1>
+        <sortable-js on-sort="sortableEnded">
+            <template id="conceptsList" is="dom-repeat" items={{concepts}}>
+              <div>
+                <!-- <paper-spinner></paper-spinner> Can't figure out how to get this-->
+                <paper-icon-item>
+                  <div>
+                    <h3 on-click="toggle" id= {{item.pos}} data-id$="{{item.pos}}">{{item.title}}</h3>
+                  </div>
+                  <iron-icon class = "end-justified"icon="editor:drag-handle" item-icon></iron-icon>
+                  <iron-icon class = "end-justified" id = {{item.key}} icon="icons:delete" item-icon on-click="deleteItem"></iron-icon>
+                </paper-icon-item>
+                <iron-collapse class="conceptToggle" id= "Concept{{item.pos}}">
+                  <div id = "classContent">
+                    <div class = "flex-horizontal" id = "videosContainer">
+                      <paper-header-panel mode="seamed">
+                        <paper-toolbar><h1>Videos</h1></paper-toolbar>
+                        <div class="paper-header">standard</div>
+                        <div class="content fit">content fits 100% below the header</div>
+                      </paper-header-panel>
+                    </div>
+                    <div class = "flex-horizontal" id = "quizzesContainer">
+                      <paper-header-panel mode="seamed">
+                        <paper-toolbar class ="subheading"><h1>Quizzes</h1></paper-toolbar>
+                        <div class="paper-header">standard</div>
+                        <div class="content fit">content fits 100% below the header</div>
+                      </paper-header-panel>
+                    </div>
+                  </div>
+                </iron-collapse>
+              </div>
+            </template>
+        </sortable-js>
+      </course-title>
+    </template>
+    <paper-dialog id = "addDialog" modal>
+      <h2>Add a Concept</h2>
+      <div>
+        <!-- Look up Iron keys to change this -->
+        <form is="iron-form">
+          <paper-input name="name" label="Concept Name" id ="conceptFormName" required auto-validate></paper-input>
+          <paper-button dialog-dismiss>Cancel</paper-button>
+          <paper-button on-tap="addConceptFormDone">Done</paper-button>
+        </form>
+      </div>
+      <div class="buttons">
+      </div>
+    </paper-dialog>
+    <paper-fab icon = "add" title = "Add" on-tap="addConcept"></paper-fab>
+  </template>
+  <script src = "../../dist/course-element.js"></script>
+</dom-module>

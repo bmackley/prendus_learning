@@ -6,21 +6,22 @@ export function rootReducer(state = InitialState, action) {
     state.deletedConcept = '';
     switch(action.type) {
         case Actions.setCurrentUser.type: {
-            const newState = Object.assign({}, state);
-            newState.currentUser.email = action.email;
-            return newState;
+          console.log('Hello World')
+          const newState = Object.assign({}, state);
+          newState.currentUser.email = action.email;
+          return newState;
         }
         case Actions.checkUserAuth.type: {
-            const newState = Object.assign({}, state);
-            newState.currentUser.email = action.user;
-            return newState;
+          console.log('ech user auth')
+          const newState = Object.assign({}, state);
+          newState.currentUser.email = action.email;
+          return newState;
         }
         case Actions.addConcept.type: {
           const newState = Object.assign({}, state);
           const conceptDetail = action.key;
           newState.concepts[action.key] = action;
           newState.newConcept = newState.concepts[action.key];
-          console.log('newState', newState);
           return newState;
         }
         case Actions.setConcepts.type: {
@@ -37,8 +38,6 @@ export function rootReducer(state = InitialState, action) {
             const newState = Object.assign({}, state);
             const deletedConcept = action.conceptKey;
             for(const item in newState.concepts){
-                console.log(item);
-                console.log(newState.concepts.item);
                 if(item === deletedConcept){
                   delete newState.concepts[item];
                 }
